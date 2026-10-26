@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
+import { TransactionModal } from './TransactionModal';
 import {
   Menu,
   Plus,
@@ -14,25 +15,34 @@ import {
 export const Layout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [quickAddOpen, setQuickAddOpen] = useState(false);
 
-  // Global keyboard shortcut 'N' for Quick Add (unless typing in input/textarea)
+  // Global listener for Quick Add
   useEffect(() => {
+    const handleQuickAddEvent = () => {
+      setQuickAddOpen(true);
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (
         (e.key === 'n' || e.key === 'N') &&
         !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)
       ) {
         e.preventDefault();
-        // Trigger quick add action or navigate to transaction creation
-        window.dispatchEvent(new CustomEvent('open-quick-add'));
+        setQuickAddOpen(true);
       }
     };
+
+    window.addEventListener('open-quick-add', handleQuickAddEvent);
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('open-quick-add', handleQuickAddEvent);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
-  const handleQuickAdd = () => {
-    window.dispatchEvent(new CustomEvent('open-quick-add'));
+  const handleOpenQuickAdd = () => {
+    setQuickAddOpen(true);
   };
 
   return (
@@ -43,7 +53,7 @@ export const Layout: React.FC = () => {
         onToggleCollapse={() => setCollapsed(!collapsed)}
         mobileOpen={mobileMenuOpen}
         onCloseMobile={() => setMobileMenuOpen(false)}
-        onQuickAdd={handleQuickAdd}
+        onQuickAdd={handleOpenQuickAdd}
       />
 
       {/* Main Content Area */}
@@ -66,8 +76,8 @@ export const Layout: React.FC = () => {
           </div>
 
           <button
-            onClick={handleQuickAdd}
-            className="flex h-8 items-center gap-1.5 rounded bg-[#37352F] text-white text-xs font-medium px-2.5 active:scale-95 transition-all"
+            onClick={handleOpenQuickAdd}
+            className="flex h-8 items-center gap-1.5 rounded bg-[#37352F] text-white text-xs font-medium px-2.5 active:scale-95 transition-all cursor-pointer"
           >
             <Plus className="h-4 w-4" />
             <span>Add</span>
@@ -82,9 +92,9 @@ export const Layout: React.FC = () => {
 
       {/* Mobile Floating Action Button (Quick Add) */}
       <button
-        onClick={handleQuickAdd}
+        onClick={handleOpenQuickAdd}
         aria-label="Quick Add (N)"
-        className="fixed bottom-20 right-5 z-40 md:hidden flex h-12 w-12 items-center justify-center rounded-full bg-[#37352F] text-white shadow-md active:scale-90 transition-transform"
+        className="fixed bottom-20 right-5 z-40 md:hidden flex h-12 w-12 items-center justify-center rounded-full bg-[#37352F] text-white shadow-md active:scale-90 transition-transform cursor-pointer"
       >
         <Plus className="h-6 w-6" />
       </button>
@@ -147,6 +157,12 @@ export const Layout: React.FC = () => {
           <span>More</span>
         </button>
       </nav>
+
+      {/* Global Quick Add Transaction Modal */}
+      <TransactionModal
+        isOpen={quickAddOpen}
+        onClose={() => setQuickAddOpen(false)}
+      />
     </div>
   );
 };
