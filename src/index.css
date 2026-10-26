@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-notion-bg: #FBFBFA;
+  --color-notion-sidebar: #F7F6F3;
+  --color-notion-sidebar-hover: #EFEFEF;
+  --color-notion-text: #37352F;
+  --color-notion-muted: #787774;
+  --color-notion-border: #E9E9E7;
+  --color-notion-hover: #F1F1EF;
+  
+  --color-status-green: #0F7B6C;
+  --color-status-green-bg: #EDF6F3;
+  --color-status-amber: #D9730D;
+  --color-status-amber-bg: #FBF3DB;
+  --color-status-red: #E03E3E;
+  --color-status-red-bg: #FBE4E4;
+}
+
+:root {
+  font-family: var(--font-sans);
+  color: #37352F;
+  background-color: #FBFBFA;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #FBFBFA;
+  color: #37352F;
+}
+
+/* Custom scrollbars matching minimal Notion style */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E9E9E7;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D3D2CE;
+}
