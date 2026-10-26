@@ -40,7 +40,7 @@ export const App: React.FC = () => {
           <p className="text-sm text-[#37352F] mt-2">
             Could not initialize local browser storage: {dbError}
           </p>
-          <p className="text-xs text-[#787774] mt-3">
+          <p className="text-xs text-[#5F5E5B] mt-3">
             Please make sure third-party storage or IndexedDB is enabled in your browser settings.
           </p>
         </div>
@@ -51,7 +51,7 @@ export const App: React.FC = () => {
   if (!dbReady) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FBFBFA]">
-        <div className="flex items-center gap-2 text-sm text-[#787774]">
+        <div className="flex items-center gap-2 text-sm text-[#5F5E5B]">
           <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#37352F] border-t-transparent" />
           <span>Loading local database...</span>
         </div>

@@ -86,12 +86,12 @@ export class ErrorBoundary extends Component<Props, State> {
               </h2>
             </div>
 
-            <p className="text-xs text-[#787774]">
+            <p className="text-xs text-[#5F5E5B]">
               An unexpected application error occurred. Your financial data is safely stored in your browser's local IndexedDB.
             </p>
 
             {this.state.error && (
-              <div className="p-2.5 rounded bg-[#F7F6F3] border border-[#E9E9E7] text-[11px] font-mono text-[#787774] overflow-x-auto max-h-24">
+              <div className="p-2.5 rounded bg-[#F7F6F3] border border-[#E9E9E7] text-[11px] font-mono text-[#5F5E5B] overflow-x-auto max-h-24">
                 {this.state.error.message}
               </div>
             )}

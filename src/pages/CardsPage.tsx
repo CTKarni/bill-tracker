@@ -87,7 +87,7 @@ export const CardsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-[#37352F]">Cards</h1>
-          <p className="text-sm text-[#787774] mt-0.5">
+          <p className="text-sm text-[#5F5E5B] mt-0.5">
             Manage your credit cards, credit limits, and billing cycle cut-offs
           </p>
         </div>
@@ -104,11 +104,11 @@ export const CardsPage: React.FC = () => {
       {/* Cards List or Empty State */}
       {!cards || cards.length === 0 ? (
         <div className="rounded border border-[#E9E9E7] bg-white p-12 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#787774] mb-3">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#5F5E5B] mb-3">
             <CreditCard className="h-6 w-6" />
           </div>
           <h3 className="text-base font-medium text-[#37352F]">No credit cards yet</h3>
-          <p className="text-sm text-[#787774] max-w-sm mx-auto mt-1 mb-5">
+          <p className="text-sm text-[#5F5E5B] max-w-sm mx-auto mt-1 mb-5">
             Add your first credit card with its limit, statement day, and due day to start tracking available balance.
           </p>
           <button
@@ -165,10 +165,10 @@ export const CardsPage: React.FC = () => {
                         CC
                       </div>
                       <div>
-                        <h3 className="text-base font-semibold text-[#37352F] tracking-tight">
+                        <h3 className="text-base font-semibold text-[#37352F] tracking-tight break-words">
                           {card.nickname}
                         </h3>
-                        <div className="flex items-center gap-2 text-xs text-[#787774] font-mono">
+                        <div className="flex items-center gap-2 text-xs text-[#5F5E5B] font-mono">
                           <span>•••• {card.last4}</span>
                         </div>
                       </div>
@@ -179,14 +179,14 @@ export const CardsPage: React.FC = () => {
                       <button
                         onClick={() => handleOpenEdit(card)}
                         title="Edit Card"
-                        className="flex h-7 w-7 items-center justify-center rounded text-[#787774] hover:bg-[#F1F1EF] hover:text-[#37352F] transition-colors"
+                        className="flex h-7 w-7 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#F1F1EF] hover:text-[#37352F] transition-colors"
                       >
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => setDeleteConfirmCard(card)}
                         title="Delete Card"
-                        className="flex h-7 w-7 items-center justify-center rounded text-[#787774] hover:bg-[#FBE4E4] hover:text-[#E03E3E] transition-colors"
+                        className="flex h-7 w-7 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#FBE4E4] hover:text-[#E03E3E] transition-colors"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
@@ -196,7 +196,7 @@ export const CardsPage: React.FC = () => {
                   {/* Financial Metrics */}
                   <div className="mt-5 grid grid-cols-2 gap-3 pb-4 border-b border-[#E9E9E7]">
                     <div>
-                      <span className="text-[11px] font-medium text-[#787774] block uppercase tracking-wider">
+                      <span className="text-[11px] font-medium text-[#5F5E5B] block uppercase tracking-wider">
                         Available Limit
                       </span>
                       <span
@@ -206,13 +206,13 @@ export const CardsPage: React.FC = () => {
                       >
                         {formatINR(availableLimit)}
                       </span>
-                      <span className="text-[11px] text-[#787774]">
+                      <span className="text-[11px] text-[#5F5E5B]">
                         of {formatINR(card.limit)} limit
                       </span>
                     </div>
 
                     <div>
-                      <span className="text-[11px] font-medium text-[#787774] block uppercase tracking-wider">
+                      <span className="text-[11px] font-medium text-[#5F5E5B] block uppercase tracking-wider">
                         {isCreditBalance ? 'Credit Balance' : 'Outstanding'}
                       </span>
                       <span
@@ -224,7 +224,7 @@ export const CardsPage: React.FC = () => {
                           ? `+${formatINR(Math.abs(outstanding))}`
                           : formatINR(outstanding)}
                       </span>
-                      <span className="text-[11px] text-[#787774]">
+                      <span className="text-[11px] text-[#5F5E5B]">
                         {isCreditBalance ? 'Overpaid / refunded' : 'Current unbilled & billed'}
                       </span>
                     </div>
@@ -233,7 +233,7 @@ export const CardsPage: React.FC = () => {
                   {/* Utilization Progress Bar */}
                   <div className="mt-4">
                     <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="text-[#787774]">Credit Utilization</span>
+                      <span className="text-[#5F5E5B]">Credit Utilization</span>
                       <span
                         className="font-medium px-2 py-0.5 rounded text-[11px]"
                         style={{ color: statusColor, backgroundColor: statusBg }}
@@ -257,20 +257,20 @@ export const CardsPage: React.FC = () => {
                 {/* Billing Cycle & Due Date Information */}
                 <div className="mt-5 pt-3 border-t border-[#E9E9E7] grid grid-cols-2 gap-2 text-xs">
                   <div>
-                    <div className="flex items-center gap-1.5 text-[#787774]">
+                    <div className="flex items-center gap-1.5 text-[#5F5E5B]">
                       <Calendar className="h-3.5 w-3.5" />
                       <span>Next Statement</span>
                     </div>
                     <span className="font-medium text-[#37352F] block mt-0.5">
                       {formatDisplayDate(cycle.end, 'dd MMM yyyy')}
                     </span>
-                    <span className="text-[11px] text-[#787774]">
+                    <span className="text-[11px] text-[#5F5E5B]">
                       {daysLeft === 0 ? 'Closes today' : `${daysLeft} days left in cycle`}
                     </span>
                   </div>
 
                   <div>
-                    <div className="flex items-center gap-1.5 text-[#787774]">
+                    <div className="flex items-center gap-1.5 text-[#5F5E5B]">
                       <Clock className="h-3.5 w-3.5" />
                       <span>Next Due Date</span>
                     </div>
@@ -283,7 +283,7 @@ export const CardsPage: React.FC = () => {
                           ? 'text-[#E03E3E]'
                           : dueDays <= 3
                           ? 'text-[#D9730D]'
-                          : 'text-[#787774]'
+                          : 'text-[#5F5E5B]'
                       }`}
                     >
                       {dueDays < 0

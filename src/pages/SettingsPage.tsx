@@ -32,7 +32,7 @@ const CATEGORY_COLORS = [
   '#5C3882', // violet
   '#DF5452', // coral
   '#337EA9', // cyan
-  '#787774', // slate
+  '#5F5E5B', // slate
   '#2B6CB0', // cobalt
   '#C05621', // rust
 ];
@@ -314,7 +314,7 @@ export const SettingsPage: React.FC = () => {
       {/* Page Title */}
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-[#37352F]">Settings</h1>
-        <p className="text-sm text-[#787774] mt-0.5">
+        <p className="text-sm text-[#5F5E5B] mt-0.5">
           Notification preferences, category customization, calendar sync, and data backup
         </p>
       </div>
@@ -358,9 +358,9 @@ export const SettingsPage: React.FC = () => {
                   onChange={(e) => setReminderDays(e.target.value)}
                   className="rounded border border-[#E9E9E7] bg-white px-3 py-1.5 text-xs text-[#37352F] focus:outline-hidden w-24"
                 />
-                <span className="text-xs text-[#787774]">days before payment is due</span>
+                <span className="text-xs text-[#5F5E5B]">days before payment is due</span>
               </div>
-              <p className="text-[11px] text-[#787774] mt-1">
+              <p className="text-[11px] text-[#5F5E5B] mt-1">
                 Dashboard displays an alert banner when payment is within this many days.
               </p>
             </div>
@@ -378,9 +378,9 @@ export const SettingsPage: React.FC = () => {
                   onChange={(e) => setAlertPercent(e.target.value)}
                   className="rounded border border-[#E9E9E7] bg-white px-3 py-1.5 text-xs text-[#37352F] focus:outline-hidden w-24"
                 />
-                <span className="text-xs text-[#787774]">% of monthly category budget</span>
+                <span className="text-xs text-[#5F5E5B]">% of monthly category budget</span>
               </div>
-              <p className="text-[11px] text-[#787774] mt-1">
+              <p className="text-[11px] text-[#5F5E5B] mt-1">
                 Alert turns amber when spending reaches this percentage of budget (default 80%).
               </p>
             </div>
@@ -412,7 +412,7 @@ export const SettingsPage: React.FC = () => {
           </div>
         </div>
 
-        <p className="text-xs text-[#787774]">
+        <p className="text-xs text-[#5F5E5B]">
           Download an `.ics` file containing all upcoming credit card due dates with an alarm set to{' '}
           {settings?.reminderDaysBeforeDue ?? 3} days before due. Works with Apple Calendar, Google Calendar, Outlook, and phone calendars.
         </p>
@@ -456,7 +456,7 @@ export const SettingsPage: React.FC = () => {
                 />
                 <span className="text-xs font-medium text-[#37352F] truncate">{cat.name}</span>
                 {cat.isDefault && (
-                  <span className="text-[10px] text-[#787774] bg-[#EFEFEF] px-1 rounded">
+                  <span className="text-[10px] text-[#5F5E5B] bg-[#EFEFEF] px-1 rounded">
                     Default
                   </span>
                 )}
@@ -466,7 +466,7 @@ export const SettingsPage: React.FC = () => {
                 <button
                   onClick={() => handleOpenCategoryModal(cat)}
                   title="Rename or recolor"
-                  className="flex h-6 w-6 items-center justify-center rounded text-[#787774] hover:bg-[#EFEFEF] hover:text-[#37352F]"
+                  className="flex h-6 w-6 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#EFEFEF] hover:text-[#37352F]"
                 >
                   <Pencil className="h-3 w-3" />
                 </button>
@@ -474,7 +474,7 @@ export const SettingsPage: React.FC = () => {
                 <button
                   onClick={() => handleOpenDeleteCategory(cat)}
                   title="Delete category with reassign"
-                  className="flex h-6 w-6 items-center justify-center rounded text-[#787774] hover:bg-[#FBE4E4] hover:text-[#E03E3E]"
+                  className="flex h-6 w-6 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#FBE4E4] hover:text-[#E03E3E]"
                 >
                   <Trash2 className="h-3 w-3" />
                 </button>
@@ -491,7 +491,7 @@ export const SettingsPage: React.FC = () => {
           <h2 className="text-sm font-semibold text-[#37352F]">Data Backup & Restore</h2>
         </div>
 
-        <p className="text-xs text-[#787774]">
+        <p className="text-xs text-[#5F5E5B]">
           Since all data stays exclusively inside this browser, download regular JSON backups to prevent accidental data loss or to move your database to another device.
         </p>
 
@@ -507,7 +507,7 @@ export const SettingsPage: React.FC = () => {
           </div>
         )}
 
-        <div className="text-xs text-[#787774]">
+        <div className="text-xs text-[#5F5E5B]">
           Last backup:{' '}
           <span className="font-medium text-[#37352F]">
             {lastBackup ? formatDisplayDate(lastBackup) : 'Never'}

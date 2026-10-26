@@ -129,7 +129,7 @@ export const SubscriptionsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-[#37352F]">Subscriptions & Recurring</h1>
-          <p className="text-sm text-[#787774] mt-0.5">
+          <p className="text-sm text-[#5F5E5B] mt-0.5">
             Monitor recurring monthly and annual credit card charges
           </p>
         </div>
@@ -146,37 +146,37 @@ export const SubscriptionsPage: React.FC = () => {
       {/* Overview Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded border border-[#E9E9E7] bg-white p-4">
-          <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+          <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
             Estimated Monthly Cost
           </span>
           <span className="text-2xl font-bold tracking-tight text-[#37352F] block mt-1">
             {formatINR(monthlyTotals.monthlyPaise)}
           </span>
-          <span className="text-xs text-[#787774] mt-0.5 block">
+          <span className="text-xs text-[#5F5E5B] mt-0.5 block">
             averaged across {recurringTemplates.length} recurring items
           </span>
         </div>
 
         <div className="rounded border border-[#E9E9E7] bg-white p-4">
-          <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+          <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
             Annual Commitment
           </span>
           <span className="text-2xl font-bold tracking-tight text-[#37352F] block mt-1">
             {formatINR(monthlyTotals.yearlyPaise)}
           </span>
-          <span className="text-xs text-[#787774] mt-0.5 block">
+          <span className="text-xs text-[#5F5E5B] mt-0.5 block">
             yearly projected spend
           </span>
         </div>
 
         <div className="rounded border border-[#E9E9E7] bg-white p-4">
-          <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+          <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
             Active Subscriptions
           </span>
           <span className="text-2xl font-bold tracking-tight text-[#37352F] block mt-1">
             {recurringTemplates.length}
           </span>
-          <span className="text-xs text-[#787774] mt-0.5 block">
+          <span className="text-xs text-[#5F5E5B] mt-0.5 block">
             services, utilities & memberships
           </span>
         </div>
@@ -190,11 +190,11 @@ export const SubscriptionsPage: React.FC = () => {
 
         {recurringTemplates.length === 0 ? (
           <div className="rounded border border-[#E9E9E7] bg-white p-12 text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#787774] mb-3">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#5F5E5B] mb-3">
               <CalendarClock className="h-6 w-6" />
             </div>
             <h3 className="text-base font-medium text-[#37352F]">No recurring subscriptions</h3>
-            <p className="text-sm text-[#787774] max-w-sm mx-auto mt-1 mb-5">
+            <p className="text-sm text-[#5F5E5B] max-w-sm mx-auto mt-1 mb-5">
               Add recurring charges (like Netflix, Spotify, AWS, or gym memberships) to track monthly costs and quickly log recurring payments.
             </p>
             <button
@@ -225,7 +225,7 @@ export const SubscriptionsPage: React.FC = () => {
                         <h3 className="font-semibold text-sm text-[#37352F] truncate">
                           {sub.note || category?.name || 'Recurring Subscription'}
                         </h3>
-                        <div className="flex items-center gap-2 text-xs text-[#787774] mt-0.5">
+                        <div className="flex items-center gap-2 text-xs text-[#5F5E5B] mt-0.5">
                           {category && (
                             <span className="flex items-center gap-1">
                               <span
@@ -247,14 +247,14 @@ export const SubscriptionsPage: React.FC = () => {
                         <span className="text-base font-bold text-[#37352F] block">
                           {formatINR(sub.amount)}
                         </span>
-                        <span className="text-[11px] text-[#787774] uppercase tracking-wider">
+                        <span className="text-[11px] text-[#5F5E5B] uppercase tracking-wider">
                           /{sub.recurringFrequency || 'monthly'}
                         </span>
                       </div>
                     </div>
 
                     {/* Next date badge */}
-                    <div className="flex items-center gap-1.5 text-xs text-[#787774] mt-3 pt-3 border-t border-[#E9E9E7]">
+                    <div className="flex items-center gap-1.5 text-xs text-[#5F5E5B] mt-3 pt-3 border-t border-[#E9E9E7]">
                       <Calendar className="h-3.5 w-3.5" />
                       <span>Next expected charge: </span>
                       <strong className="text-[#37352F]">
@@ -268,7 +268,7 @@ export const SubscriptionsPage: React.FC = () => {
                     <button
                       onClick={() => setDeleteConfirmTxn(sub)}
                       title="Delete subscription"
-                      className="text-xs text-[#787774] hover:text-[#E03E3E] transition-colors p-1"
+                      className="text-xs text-[#5F5E5B] hover:text-[#E03E3E] transition-colors p-1"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>

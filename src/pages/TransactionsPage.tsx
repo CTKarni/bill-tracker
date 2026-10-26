@@ -303,7 +303,7 @@ export const TransactionsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-[#37352F]">Transactions</h1>
-          <p className="text-sm text-[#787774] mt-0.5">
+          <p className="text-sm text-[#5F5E5B] mt-0.5">
             Log, filter, and reconcile credit card transactions and billing cycles
           </p>
         </div>
@@ -316,7 +316,7 @@ export const TransactionsPage: React.FC = () => {
                 title="Export filtered transactions to CSV"
                 className="inline-flex items-center gap-1.5 rounded border border-[#E9E9E7] bg-white px-3 py-2 text-xs font-medium text-[#37352F] hover:bg-[#F1F1EF] transition-colors cursor-pointer"
               >
-                <Download className="h-3.5 w-3.5 text-[#787774]" />
+                <Download className="h-3.5 w-3.5 text-[#5F5E5B]" />
                 <span>Export CSV</span>
               </button>
 
@@ -349,7 +349,7 @@ export const TransactionsPage: React.FC = () => {
             className={`px-3 py-1 rounded text-xs font-medium transition-colors cursor-pointer ${
               viewMode === 'all'
                 ? 'bg-white text-[#37352F] shadow-xs'
-                : 'text-[#787774] hover:text-[#37352F]'
+                : 'text-[#5F5E5B] hover:text-[#37352F]'
             }`}
           >
             All Transactions
@@ -359,7 +359,7 @@ export const TransactionsPage: React.FC = () => {
             className={`px-3 py-1 rounded text-xs font-medium transition-colors cursor-pointer ${
               viewMode === 'cycle'
                 ? 'bg-white text-[#37352F] shadow-xs'
-                : 'text-[#787774] hover:text-[#37352F]'
+                : 'text-[#5F5E5B] hover:text-[#37352F]'
             }`}
           >
             Billing Cycle View
@@ -372,7 +372,7 @@ export const TransactionsPage: React.FC = () => {
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-medium transition-colors cursor-pointer ${
             showFilters || hasActiveFilters
               ? 'border-[#37352F] bg-[#F1F1EF] text-[#37352F]'
-              : 'border-[#E9E9E7] bg-white text-[#787774] hover:text-[#37352F]'
+              : 'border-[#E9E9E7] bg-white text-[#5F5E5B] hover:text-[#37352F]'
           }`}
         >
           <Filter className="h-3.5 w-3.5" />
@@ -411,7 +411,7 @@ export const TransactionsPage: React.FC = () => {
                   onClick={() => setSelectedCycleIndex((prev) => Math.min(availableCycles.length - 1, prev + 1))}
                   disabled={selectedCycleIndex >= availableCycles.length - 1}
                   title="Previous Billing Cycle"
-                  className="flex h-7 w-7 items-center justify-center rounded text-[#787774] hover:bg-[#EFEFEF] hover:text-[#37352F] disabled:opacity-30 cursor-pointer"
+                  className="flex h-7 w-7 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#EFEFEF] hover:text-[#37352F] disabled:opacity-30 cursor-pointer"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -420,7 +420,7 @@ export const TransactionsPage: React.FC = () => {
                   <span className="font-semibold">
                     {formatDisplayDate(activeCycle.start, 'dd MMM yyyy')} – {formatDisplayDate(activeCycle.end, 'dd MMM yyyy')}
                   </span>
-                  <span className="text-[11px] text-[#787774] ml-2">
+                  <span className="text-[11px] text-[#5F5E5B] ml-2">
                     {selectedCycleIndex === 0 ? '(Current Cycle)' : `(${selectedCycleIndex} cycles ago)`}
                   </span>
                 </div>
@@ -429,7 +429,7 @@ export const TransactionsPage: React.FC = () => {
                   onClick={() => setSelectedCycleIndex((prev) => Math.max(0, prev - 1))}
                   disabled={selectedCycleIndex <= 0}
                   title="Next Billing Cycle"
-                  className="flex h-7 w-7 items-center justify-center rounded text-[#787774] hover:bg-[#EFEFEF] hover:text-[#37352F] disabled:opacity-30 cursor-pointer"
+                  className="flex h-7 w-7 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#EFEFEF] hover:text-[#37352F] disabled:opacity-30 cursor-pointer"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
@@ -439,19 +439,19 @@ export const TransactionsPage: React.FC = () => {
             {/* Cycle Spend Metric */}
             <div className="flex items-center gap-4 text-xs">
               <div>
-                <span className="text-[#787774] block text-[11px]">Logged Cycle Spend</span>
+                <span className="text-[#5F5E5B] block text-[11px]">Logged Cycle Spend</span>
                 <span className="text-base font-bold text-[#37352F]">
                   {formatINR(loggedCycleSpend)}
                 </span>
               </div>
               <div className="border-l border-[#E9E9E7] pl-4">
-                <span className="text-[#787774] block text-[11px]">Statement Date</span>
+                <span className="text-[#5F5E5B] block text-[11px]">Statement Date</span>
                 <span className="font-medium text-[#37352F]">
                   {formatDisplayDate(activeCycle.statementDate, 'dd MMM yyyy')}
                 </span>
               </div>
               <div className="border-l border-[#E9E9E7] pl-4">
-                <span className="text-[#787774] block text-[11px]">Payment Due Date</span>
+                <span className="text-[#5F5E5B] block text-[11px]">Payment Due Date</span>
                 <span className="font-medium text-[#37352F]">
                   {formatDisplayDate(activeCycle.dueDate, 'dd MMM yyyy')}
                 </span>
@@ -465,7 +465,7 @@ export const TransactionsPage: React.FC = () => {
               <FileCheck2 className="h-4 w-4 text-[#37352F] shrink-0" />
               <div>
                 <span className="font-medium text-[#37352F]">Bill Match Check: </span>
-                <span className="text-[#787774]">
+                <span className="text-[#5F5E5B]">
                   Enter statement total from your credit card bill to check for missing expenses.
                 </span>
               </div>
@@ -473,7 +473,7 @@ export const TransactionsPage: React.FC = () => {
 
             <div className="flex items-center gap-2">
               <div className="relative">
-                <span className="absolute left-2.5 top-1.5 text-xs text-[#787774]">₹</span>
+                <span className="absolute left-2.5 top-1.5 text-xs text-[#5F5E5B]">₹</span>
                 <input
                   type="text"
                   placeholder="Statement total"
@@ -532,7 +532,7 @@ export const TransactionsPage: React.FC = () => {
               setFilterReimbursable('unreimbursed');
               setShowFilters(true);
             }}
-            className="text-[11px] text-[#787774] hover:text-[#37352F] self-start sm:self-auto cursor-pointer"
+            className="text-[11px] text-[#5F5E5B] hover:text-[#37352F] self-start sm:self-auto cursor-pointer"
           >
             Filter unreimbursed
           </button>
@@ -543,18 +543,18 @@ export const TransactionsPage: React.FC = () => {
       <div className="space-y-3">
         {/* Search input */}
         <div className="relative">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#787774]" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#5F5E5B]" />
           <input
             type="text"
             placeholder="Search transactions by note, category name, or amount..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded border border-[#E9E9E7] bg-white pl-9 pr-8 py-2 text-xs text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden"
+            className="w-full rounded border border-[#E9E9E7] bg-white pl-9 pr-8 py-2 text-xs text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-2.5 text-[#787774] hover:text-[#37352F]"
+              className="absolute right-2.5 top-2.5 text-[#5F5E5B] hover:text-[#37352F]"
             >
               <X className="h-4 w-4" />
             </button>
@@ -579,7 +579,7 @@ export const TransactionsPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
               {/* Card Filter */}
               <div>
-                <label className="block text-[11px] font-medium text-[#787774] mb-1">Card</label>
+                <label className="block text-[11px] font-medium text-[#5F5E5B] mb-1">Card</label>
                 <select
                   value={filterCardId}
                   onChange={(e) => setFilterCardId(e.target.value)}
@@ -596,7 +596,7 @@ export const TransactionsPage: React.FC = () => {
 
               {/* Category Filter */}
               <div>
-                <label className="block text-[11px] font-medium text-[#787774] mb-1">Category</label>
+                <label className="block text-[11px] font-medium text-[#5F5E5B] mb-1">Category</label>
                 <select
                   value={filterCategoryId}
                   onChange={(e) => setFilterCategoryId(e.target.value)}
@@ -613,7 +613,7 @@ export const TransactionsPage: React.FC = () => {
 
               {/* Type Filter */}
               <div>
-                <label className="block text-[11px] font-medium text-[#787774] mb-1">Type</label>
+                <label className="block text-[11px] font-medium text-[#5F5E5B] mb-1">Type</label>
                 <select
                   value={filterType}
                   onChange={(e) => setFilterType(e.target.value)}
@@ -628,7 +628,7 @@ export const TransactionsPage: React.FC = () => {
 
               {/* Reimbursable Filter */}
               <div>
-                <label className="block text-[11px] font-medium text-[#787774] mb-1">Reimbursable</label>
+                <label className="block text-[11px] font-medium text-[#5F5E5B] mb-1">Reimbursable</label>
                 <select
                   value={filterReimbursable}
                   onChange={(e) => setFilterReimbursable(e.target.value)}
@@ -643,7 +643,7 @@ export const TransactionsPage: React.FC = () => {
 
               {/* Date Start */}
               <div>
-                <label className="block text-[11px] font-medium text-[#787774] mb-1">Start Date</label>
+                <label className="block text-[11px] font-medium text-[#5F5E5B] mb-1">Start Date</label>
                 <input
                   type="date"
                   value={filterStartDate}
@@ -654,7 +654,7 @@ export const TransactionsPage: React.FC = () => {
 
               {/* Date End */}
               <div>
-                <label className="block text-[11px] font-medium text-[#787774] mb-1">End Date</label>
+                <label className="block text-[11px] font-medium text-[#5F5E5B] mb-1">End Date</label>
                 <input
                   type="date"
                   value={filterEndDate}
@@ -665,7 +665,7 @@ export const TransactionsPage: React.FC = () => {
 
               {/* Min Amount */}
               <div>
-                <label className="block text-[11px] font-medium text-[#787774] mb-1">Min Amount (₹)</label>
+                <label className="block text-[11px] font-medium text-[#5F5E5B] mb-1">Min Amount (₹)</label>
                 <input
                   type="text"
                   placeholder="0"
@@ -677,7 +677,7 @@ export const TransactionsPage: React.FC = () => {
 
               {/* Max Amount */}
               <div>
-                <label className="block text-[11px] font-medium text-[#787774] mb-1">Max Amount (₹)</label>
+                <label className="block text-[11px] font-medium text-[#5F5E5B] mb-1">Max Amount (₹)</label>
                 <input
                   type="text"
                   placeholder="No limit"
@@ -692,7 +692,7 @@ export const TransactionsPage: React.FC = () => {
       </div>
 
       {/* Result Count and Combined Totals */}
-      <div className="flex items-center justify-between text-xs text-[#787774] flex-wrap gap-2">
+      <div className="flex items-center justify-between text-xs text-[#5F5E5B] flex-wrap gap-2">
         <div className="flex items-center gap-3">
           <span>
             Showing <strong>{sortedTransactions.length}</strong> transaction
@@ -730,11 +730,11 @@ export const TransactionsPage: React.FC = () => {
       {/* Transactions Table or Empty State */}
       {sortedTransactions.length === 0 ? (
         <div className="rounded border border-[#E9E9E7] bg-white p-12 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#787774] mb-3">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#5F5E5B] mb-3">
             <ArrowLeftRight className="h-6 w-6" />
           </div>
           <h3 className="text-base font-medium text-[#37352F]">No matching transactions</h3>
-          <p className="text-sm text-[#787774] max-w-sm mx-auto mt-1 mb-5">
+          <p className="text-sm text-[#5F5E5B] max-w-sm mx-auto mt-1 mb-5">
             {hasActiveFilters
               ? 'No transactions matched the current search query or filter combination.'
               : 'Log your daily card spending or bill payments to keep your available credit in sync.'}
@@ -761,7 +761,7 @@ export const TransactionsPage: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-[#E9E9E7] bg-[#F7F6F3] text-[#787774] font-medium uppercase tracking-wider text-[11px]">
+                <tr className="border-b border-[#E9E9E7] bg-[#F7F6F3] text-[#5F5E5B] font-medium uppercase tracking-wider text-[11px]">
                   <th className="py-3 px-4">Date</th>
                   <th className="py-3 px-4">Type</th>
                   <th className="py-3 px-4">Category</th>
@@ -812,7 +812,7 @@ export const TransactionsPage: React.FC = () => {
                       {/* Category */}
                       <td className="py-3 px-4 whitespace-nowrap">
                         {txn.type === 'payment' ? (
-                          <span className="text-[#787774] italic">Bill payment</span>
+                          <span className="text-[#5F5E5B] italic">Bill payment</span>
                         ) : category ? (
                           <span className="inline-flex items-center gap-1.5 text-xs text-[#37352F]">
                             <span
@@ -822,7 +822,7 @@ export const TransactionsPage: React.FC = () => {
                             <span>{category.name}</span>
                           </span>
                         ) : (
-                          <span className="text-[#787774]">Uncategorized</span>
+                          <span className="text-[#5F5E5B]">Uncategorized</span>
                         )}
                       </td>
 
@@ -835,15 +835,15 @@ export const TransactionsPage: React.FC = () => {
                               style={{ backgroundColor: card.color || '#37352F' }}
                             />
                             <span className="font-medium">{card.nickname}</span>
-                            <span className="font-mono text-[#787774]">•••• {card.last4}</span>
+                            <span className="font-mono text-[#5F5E5B]">•••• {card.last4}</span>
                           </span>
                         ) : (
-                          <span className="text-[#787774] italic">Deleted Card</span>
+                          <span className="text-[#5F5E5B] italic">Deleted Card</span>
                         )}
                       </td>
 
                       {/* Note */}
-                      <td className="py-3 px-4 max-w-xs truncate text-[#787774]">
+                      <td className="py-3 px-4 max-w-xs truncate text-[#5F5E5B]">
                         {txn.note || '—'}
                       </td>
 
@@ -906,14 +906,14 @@ export const TransactionsPage: React.FC = () => {
                           <button
                             onClick={() => handleOpenEdit(txn)}
                             title="Edit Transaction"
-                            className="flex h-6 w-6 items-center justify-center rounded text-[#787774] hover:bg-[#EFEFEF] hover:text-[#37352F] transition-colors"
+                            className="flex h-6 w-6 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#EFEFEF] hover:text-[#37352F] transition-colors"
                           >
                             <Pencil className="h-3.5 w-3.5" />
                           </button>
                           <button
                             onClick={() => setDeleteConfirmTxn(txn)}
                             title="Delete Transaction"
-                            className="flex h-6 w-6 items-center justify-center rounded text-[#787774] hover:bg-[#FBE4E4] hover:text-[#E03E3E] transition-colors"
+                            className="flex h-6 w-6 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#FBE4E4] hover:text-[#E03E3E] transition-colors"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
                           </button>
@@ -928,7 +928,7 @@ export const TransactionsPage: React.FC = () => {
 
           {/* Pagination Controls */}
           {sortedTransactions.length > PAGE_SIZE && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-[#E9E9E7] bg-[#FBFBFA] text-xs text-[#787774]">
+            <div className="flex items-center justify-between px-4 py-3 border-t border-[#E9E9E7] bg-[#FBFBFA] text-xs text-[#5F5E5B]">
               <div>
                 Showing{' '}
                 <span className="font-medium text-[#37352F]">

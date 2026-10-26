@@ -77,7 +77,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <button
             onClick={onToggleCollapse}
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="hidden md:flex h-7 w-7 items-center justify-center rounded hover:bg-[#EFEFEF] text-[#787774] hover:text-[#37352F] transition-colors"
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            className="hidden md:flex h-7 w-7 items-center justify-center rounded hover:bg-[#EFEFEF] text-[#5F5E5B] hover:text-[#37352F] transition-colors"
           >
             {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </button>
@@ -85,7 +86,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Mobile close button */}
           <button
             onClick={onCloseMobile}
-            className="flex md:hidden h-7 w-7 items-center justify-center rounded hover:bg-[#EFEFEF] text-[#787774]"
+            aria-label="Close navigation menu"
+            className="flex md:hidden h-7 w-7 items-center justify-center rounded hover:bg-[#EFEFEF] text-[#5F5E5B]"
           >
             <X className="h-4 w-4" />
           </button>
@@ -125,7 +127,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }`
                 }
               >
-                <Icon className="h-4 w-4 shrink-0 text-[#787774]" />
+                <Icon className="h-4 w-4 shrink-0 text-[#5F5E5B]" />
                 {!collapsed && <span className="truncate">{item.name}</span>}
               </NavLink>
             );
@@ -135,7 +137,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Privacy badge at sidebar bottom */}
         <div className="p-3 border-t border-[#E9E9E7]">
           {!collapsed ? (
-            <div className="flex items-center gap-2 text-[11px] text-[#787774]">
+            <div className="flex items-center gap-2 text-[11px] text-[#5F5E5B]">
               <ShieldCheck className="h-3.5 w-3.5 text-[#0F7B6C] shrink-0" />
               <span className="truncate">Local-first • Browser only</span>
             </div>

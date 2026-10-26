@@ -106,8 +106,13 @@ export const BudgetsPage: React.FC = () => {
   };
 
   // Aggregates for categories with budgets set
-  const budgetedCategories = categories?.filter((c) => (c.monthlyBudget ?? 0) > 0) || [];
-  const unbudgetedCategories = categories?.filter((c) => !c.monthlyBudget || c.monthlyBudget <= 0) || [];
+  const budgetedCategories = React.useMemo(() => {
+    return categories?.filter((c) => (c.monthlyBudget ?? 0) > 0) || [];
+  }, [categories]);
+
+  const unbudgetedCategories = React.useMemo(() => {
+    return categories?.filter((c) => !c.monthlyBudget || c.monthlyBudget <= 0) || [];
+  }, [categories]);
 
   const totals = React.useMemo(() => {
     let totalBudget = 0;
@@ -130,7 +135,7 @@ export const BudgetsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-[#37352F]">Category Budgets</h1>
-          <p className="text-sm text-[#787774] mt-0.5">
+          <p className="text-sm text-[#5F5E5B] mt-0.5">
             Set target spend per category per billing cycle. Alerts trigger at {alertPercent}%.
           </p>
         </div>
@@ -140,31 +145,31 @@ export const BudgetsPage: React.FC = () => {
       {budgetedCategories.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="rounded border border-[#E9E9E7] bg-white p-4">
-            <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+            <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
               Total Monthly Budget
             </span>
             <span className="text-2xl font-bold tracking-tight text-[#37352F] block mt-1">
               {formatINR(totals.totalBudget)}
             </span>
-            <span className="text-xs text-[#787774] mt-0.5 block">
+            <span className="text-xs text-[#5F5E5B] mt-0.5 block">
               across {budgetedCategories.length} configured categories
             </span>
           </div>
 
           <div className="rounded border border-[#E9E9E7] bg-white p-4">
-            <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+            <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
               Total Spent in Cycle
             </span>
             <span className="text-2xl font-bold tracking-tight text-[#37352F] block mt-1">
               {formatINR(totals.totalSpent)}
             </span>
-            <span className="text-xs text-[#787774] mt-0.5 block">
+            <span className="text-xs text-[#5F5E5B] mt-0.5 block">
               {totals.overallStatus.percent}% of combined budget
             </span>
           </div>
 
           <div className="rounded border border-[#E9E9E7] bg-white p-4">
-            <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+            <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
               Remaining Budget
             </span>
             <span
@@ -176,7 +181,7 @@ export const BudgetsPage: React.FC = () => {
                 ? `-${formatINR(Math.abs(totals.remaining))} Over`
                 : formatINR(totals.remaining)}
             </span>
-            <span className="text-xs text-[#787774] mt-0.5 block">
+            <span className="text-xs text-[#5F5E5B] mt-0.5 block">
               {totals.remaining < 0 ? 'Over budgeted limit' : 'Safe to spend'}
             </span>
           </div>
@@ -191,9 +196,9 @@ export const BudgetsPage: React.FC = () => {
 
         {budgetedCategories.length === 0 ? (
           <div className="rounded border border-[#E9E9E7] bg-white p-8 text-center">
-            <PiggyBank className="h-8 w-8 text-[#787774] mx-auto mb-2" />
+            <PiggyBank className="h-8 w-8 text-[#5F5E5B] mx-auto mb-2" />
             <h3 className="text-sm font-medium text-[#37352F]">No category budgets set yet</h3>
-            <p className="text-xs text-[#787774] max-w-sm mx-auto mt-1 mb-4">
+            <p className="text-xs text-[#5F5E5B] max-w-sm mx-auto mt-1 mb-4">
               Set spending limits on Food & Dining, Shopping, or Groceries to monitor cycle expenses and receive threshold alerts.
             </p>
           </div>
@@ -243,7 +248,7 @@ export const BudgetsPage: React.FC = () => {
                       <button
                         onClick={() => handleOpenEdit(cat)}
                         title="Edit Budget"
-                        className="flex h-6 w-6 items-center justify-center rounded text-[#787774] hover:bg-[#F1F1EF] hover:text-[#37352F] transition-colors"
+                        className="flex h-6 w-6 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#F1F1EF] hover:text-[#37352F] transition-colors"
                       >
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
@@ -262,7 +267,7 @@ export const BudgetsPage: React.FC = () => {
                   </div>
 
                   {/* Metrics */}
-                  <div className="flex items-center justify-between text-xs text-[#787774]">
+                  <div className="flex items-center justify-between text-xs text-[#5F5E5B]">
                     <div>
                       <span>Spent: </span>
                       <strong className="text-[#37352F]">{formatINR(spent)}</strong>
@@ -293,7 +298,7 @@ export const BudgetsPage: React.FC = () => {
           <h2 className="text-sm font-semibold text-[#37352F] tracking-tight mb-2">
             Categories Without a Budget
           </h2>
-          <p className="text-xs text-[#787774] mb-3">
+          <p className="text-xs text-[#5F5E5B] mb-3">
             Click any category to define a monthly spending target.
           </p>
 
@@ -309,7 +314,7 @@ export const BudgetsPage: React.FC = () => {
                   style={{ backgroundColor: cat.color }}
                 />
                 <span>{cat.name}</span>
-                <Plus className="h-3 w-3 text-[#787774]" />
+                <Plus className="h-3 w-3 text-[#5F5E5B]" />
               </button>
             ))}
           </div>
@@ -330,7 +335,7 @@ export const BudgetsPage: React.FC = () => {
               Monthly Budget (₹)
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-2.5 text-sm text-[#787774]">₹</span>
+              <span className="absolute left-3 top-2.5 text-sm text-[#5F5E5B]">₹</span>
               <input
                 type="text"
                 autoFocus
@@ -340,7 +345,7 @@ export const BudgetsPage: React.FC = () => {
                 className="w-full rounded border border-[#E9E9E7] bg-white pl-7 pr-3 py-2 text-base font-semibold text-[#37352F] focus:border-[#37352F] focus:outline-hidden"
               />
             </div>
-            <p className="text-[11px] text-[#787774] mt-1">
+            <p className="text-[11px] text-[#5F5E5B] mt-1">
               Leave blank or 0 to remove budget for this category.
             </p>
             {budgetError && (

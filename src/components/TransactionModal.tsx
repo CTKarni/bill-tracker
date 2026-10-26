@@ -88,7 +88,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
         amountInputRef.current?.select();
       }, 50);
     }
-  }, [isOpen, transactionToEdit, cards, categories]);
+  }, [isOpen, transactionToEdit, cards, categories, defaultRecurring]);
 
   // If card list loads and no card is selected, select first
   useEffect(() => {
@@ -184,7 +184,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
     >
       {hasNoCards ? (
         <div className="py-6 text-center space-y-3">
-          <p className="text-sm text-[#787774]">
+          <p className="text-sm text-[#5F5E5B]">
             You need to add a credit card before logging transactions.
           </p>
           <button
@@ -205,7 +205,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
 
           {/* Transaction Type Segmented Control */}
           <div>
-            <label className="block text-xs font-medium text-[#787774] mb-1.5 uppercase tracking-wider">
+            <label className="block text-xs font-medium text-[#5F5E5B] mb-1.5 uppercase tracking-wider">
               Type
             </label>
             <div className="grid grid-cols-3 gap-1 rounded bg-[#F1F1EF] p-1 border border-[#E9E9E7]">
@@ -215,7 +215,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 className={`flex items-center justify-center gap-1.5 py-1.5 rounded text-xs font-medium transition-colors ${
                   type === 'expense'
                     ? 'bg-white text-[#37352F] shadow-xs'
-                    : 'text-[#787774] hover:text-[#37352F]'
+                    : 'text-[#5F5E5B] hover:text-[#37352F]'
                 }`}
               >
                 <ArrowDownLeft className="h-3.5 w-3.5 text-[#E03E3E]" />
@@ -228,7 +228,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 className={`flex items-center justify-center gap-1.5 py-1.5 rounded text-xs font-medium transition-colors ${
                   type === 'payment'
                     ? 'bg-white text-[#37352F] shadow-xs'
-                    : 'text-[#787774] hover:text-[#37352F]'
+                    : 'text-[#5F5E5B] hover:text-[#37352F]'
                 }`}
               >
                 <ArrowUpRight className="h-3.5 w-3.5 text-[#0F7B6C]" />
@@ -241,7 +241,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 className={`flex items-center justify-center gap-1.5 py-1.5 rounded text-xs font-medium transition-colors ${
                   type === 'refund'
                     ? 'bg-white text-[#37352F] shadow-xs'
-                    : 'text-[#787774] hover:text-[#37352F]'
+                    : 'text-[#5F5E5B] hover:text-[#37352F]'
                 }`}
               >
                 <RotateCcw className="h-3.5 w-3.5 text-[#0B6E99]" />
@@ -256,7 +256,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               Amount (₹) <span className="text-[#E03E3E]">*</span>
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-2.5 text-base font-medium text-[#787774]">₹</span>
+              <span className="absolute left-3 top-2.5 text-base font-medium text-[#5F5E5B]">₹</span>
               <input
                 ref={amountInputRef}
                 type="text"
@@ -264,7 +264,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 placeholder="0.00"
                 value={amountRupees}
                 onChange={(e) => setAmountRupees(e.target.value)}
-                className="w-full rounded border border-[#E9E9E7] bg-white pl-8 pr-3 py-2 text-lg font-semibold text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden transition-colors"
+                className="w-full rounded border border-[#E9E9E7] bg-white pl-8 pr-3 py-2 text-lg font-semibold text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden transition-colors"
               />
             </div>
             {errors.amount && <p className="text-[11px] text-[#E03E3E] mt-1">{errors.amount}</p>}
@@ -316,7 +316,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 )}
               </div>
             ) : (
-              <div className="flex items-center pt-6 text-xs text-[#787774]">
+              <div className="flex items-center pt-6 text-xs text-[#5F5E5B]">
                 Bill payments reduce card outstanding balance directly.
               </div>
             )}
@@ -346,7 +346,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 placeholder="e.g. Swiggy lunch, Flight to Delhi"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden transition-colors"
+                className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden transition-colors"
               />
             </div>
           </div>
@@ -370,7 +370,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                   placeholder="Who will reimburse? (e.g. Company, Rahul)"
                   value={reimbursableFrom}
                   onChange={(e) => setReimbursableFrom(e.target.value)}
-                  className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-1.5 text-xs text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden"
+                  className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-1.5 text-xs text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden"
                 />
               </div>
             )}
@@ -391,7 +391,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
 
               {isRecurring && (
                 <div className="flex items-center gap-1.5 text-xs">
-                  <span className="text-[#787774]">Frequency:</span>
+                  <span className="text-[#5F5E5B]">Frequency:</span>
                   <select
                     value={recurringFrequency}
                     onChange={(e) => setRecurringFrequency(e.target.value as 'monthly' | 'yearly')}

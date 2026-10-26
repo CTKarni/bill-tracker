@@ -18,12 +18,40 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   maxWidth = 'md',
 }) => {
+  const modalRef = React.useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
@@ -46,6 +74,7 @@ export const Modal: React.FC<ModalProps> = ({
 
       {/* Modal Dialog */}
       <div
+        ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
@@ -57,13 +86,13 @@ export const Modal: React.FC<ModalProps> = ({
               {title}
             </h3>
             {description && (
-              <p className="text-xs text-[#787774] mt-0.5">{description}</p>
+              <p className="text-xs text-[#5F5E5B] mt-0.5">{description}</p>
             )}
           </div>
           <button
             onClick={onClose}
             aria-label="Close"
-            className="flex h-7 w-7 items-center justify-center rounded text-[#787774] hover:bg-[#EFEFEF] hover:text-[#37352F] transition-colors"
+            className="flex h-7 w-7 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#EFEFEF] hover:text-[#37352F] transition-colors"
           >
             <X className="h-4 w-4" />
           </button>

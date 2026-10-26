@@ -235,7 +235,7 @@ export const DashboardPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-[#37352F]">Dashboard</h1>
-          <p className="text-sm text-[#787774] mt-0.5">
+          <p className="text-sm text-[#5F5E5B] mt-0.5">
             Credit card limits, current cycle spending, and upcoming payments
           </p>
         </div>
@@ -253,11 +253,11 @@ export const DashboardPage: React.FC = () => {
 
       {!hasCards ? (
         <div className="rounded border border-[#E9E9E7] bg-white p-12 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#787774] mb-3">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#5F5E5B] mb-3">
             <CreditCard className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-medium text-[#37352F]">No credit cards configured</h3>
-          <p className="text-sm text-[#787774] max-w-sm mx-auto mt-1 mb-5">
+          <h2 className="text-base font-medium text-[#37352F]">No credit cards configured</h2>
+          <p className="text-sm text-[#5F5E5B] max-w-sm mx-auto mt-1 mb-5">
             Start by adding your credit cards to track available limits and match spending to your billing cycle.
           </p>
           <Link
@@ -274,7 +274,7 @@ export const DashboardPage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Total Available Limit */}
             <div className="rounded border border-[#E9E9E7] bg-white p-4">
-              <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+              <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
                 Total Available Credit
               </span>
               <span
@@ -284,14 +284,14 @@ export const DashboardPage: React.FC = () => {
               >
                 {formatINR(stats.totalAvailable)}
               </span>
-              <span className="text-xs text-[#787774] mt-0.5 block">
+              <span className="text-xs text-[#5F5E5B] mt-0.5 block">
                 across {cards.length} card{cards.length > 1 ? 's' : ''} (Limit: {formatINR(stats.totalLimit)})
               </span>
             </div>
 
             {/* Total Outstanding */}
             <div className="rounded border border-[#E9E9E7] bg-white p-4">
-              <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+              <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
                 Total Outstanding
               </span>
               <span
@@ -303,20 +303,20 @@ export const DashboardPage: React.FC = () => {
                   ? `+${formatINR(Math.abs(stats.totalOutstanding))} (Credit)`
                   : formatINR(stats.totalOutstanding)}
               </span>
-              <span className="text-xs text-[#787774] mt-0.5 block">
+              <span className="text-xs text-[#5F5E5B] mt-0.5 block">
                 {stats.totalOutstanding < 0 ? 'Overpaid balance' : 'Total dues & unbilled balance'}
               </span>
             </div>
 
             {/* Current Cycle Spend */}
             <div className="rounded border border-[#E9E9E7] bg-white p-4">
-              <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider block">
+              <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider block">
                 Current Cycle Spend
               </span>
               <span className="text-2xl font-bold tracking-tight text-[#37352F] block mt-1">
                 {formatINR(stats.totalCycleSpend)}
               </span>
-              <span className="text-xs text-[#787774] mt-0.5 block">
+              <span className="text-xs text-[#5F5E5B] mt-0.5 block">
                 Net expenses in active statement cycles
               </span>
             </div>
@@ -334,7 +334,7 @@ export const DashboardPage: React.FC = () => {
                 </div>
                 <Link
                   to="/transactions"
-                  className="text-xs text-[#787774] hover:text-[#37352F] transition-colors"
+                  className="text-xs text-[#5F5E5B] hover:text-[#37352F] transition-colors"
                 >
                   View details
                 </Link>
@@ -360,7 +360,7 @@ export const DashboardPage: React.FC = () => {
               <h2 className="text-sm font-semibold text-[#37352F] tracking-tight">Your Cards</h2>
               <Link
                 to="/cards"
-                className="inline-flex items-center gap-1 text-xs text-[#787774] hover:text-[#37352F] transition-colors"
+                className="inline-flex items-center gap-1 text-xs text-[#5F5E5B] hover:text-[#37352F] transition-colors"
               >
                 <span>Manage cards</span>
                 <ArrowRight className="h-3 w-3" />
@@ -408,7 +408,7 @@ export const DashboardPage: React.FC = () => {
                         <span className="font-semibold text-sm text-[#37352F]">
                           {card.nickname}
                         </span>
-                        <span className="font-mono text-xs text-[#787774]">•••• {card.last4}</span>
+                        <span className="font-mono text-xs text-[#5F5E5B]">•••• {card.last4}</span>
                       </div>
 
                       <span
@@ -433,7 +433,7 @@ export const DashboardPage: React.FC = () => {
                     {/* Key Metrics Grid */}
                     <div className="grid grid-cols-2 gap-2 text-xs py-2 border-t border-b border-[#E9E9E7] my-3">
                       <div>
-                        <span className="text-[#787774] block text-[11px]">Available Limit</span>
+                        <span className="text-[#5F5E5B] block text-[11px]">Available Limit</span>
                         <span
                           className={`font-semibold block ${
                             availableLimit < 0 ? 'text-[#E03E3E]' : 'text-[#37352F]'
@@ -443,7 +443,7 @@ export const DashboardPage: React.FC = () => {
                         </span>
                       </div>
                       <div>
-                        <span className="text-[#787774] block text-[11px]">Current Cycle Spend</span>
+                        <span className="text-[#5F5E5B] block text-[11px]">Current Cycle Spend</span>
                         <span className="font-semibold text-[#37352F] block">
                           {formatINR(spend)}
                         </span>
@@ -451,7 +451,7 @@ export const DashboardPage: React.FC = () => {
                     </div>
 
                     {/* Statement and Due Date countdown */}
-                    <div className="flex items-center justify-between text-[11px] text-[#787774] pt-1">
+                    <div className="flex items-center justify-between text-[11px] text-[#5F5E5B] pt-1">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         <span>Cycle closes: {formatDisplayDate(cycle.end, 'dd MMM')} ({daysLeft}d left)</span>
@@ -487,7 +487,7 @@ export const DashboardPage: React.FC = () => {
               </h2>
               <Link
                 to="/transactions"
-                className="inline-flex items-center gap-1 text-xs text-[#787774] hover:text-[#37352F] transition-colors"
+                className="inline-flex items-center gap-1 text-xs text-[#5F5E5B] hover:text-[#37352F] transition-colors"
               >
                 <span>View all</span>
                 <ArrowRight className="h-3 w-3" />
@@ -495,7 +495,7 @@ export const DashboardPage: React.FC = () => {
             </div>
 
             {recentTransactions.length === 0 ? (
-              <div className="py-6 text-center text-xs text-[#787774]">
+              <div className="py-6 text-center text-xs text-[#5F5E5B]">
                 No transactions recorded yet. Click "Quick Add (N)" to record an expense or payment.
               </div>
             ) : (
@@ -525,12 +525,12 @@ export const DashboardPage: React.FC = () => {
                                 : category?.name || 'Uncategorized'}
                             </span>
                             {txn.note && (
-                              <span className="text-[#787774] truncate max-w-xs">
+                              <span className="text-[#5F5E5B] truncate max-w-xs">
                                 • {txn.note}
                               </span>
                             )}
                           </div>
-                          <div className="text-[11px] text-[#787774] flex items-center gap-2 mt-0.5">
+                          <div className="text-[11px] text-[#5F5E5B] flex items-center gap-2 mt-0.5">
                             <span>{formatDisplayDate(txn.date, 'dd MMM yyyy')}</span>
                             {card && <span>• {card.nickname} (•••• {card.last4})</span>}
                           </div>

@@ -135,7 +135,7 @@ export const CardFormModal: React.FC<CardFormModalProps> = ({
             placeholder="e.g. HDFC Regalia Gold, ICICI Amazon Pay"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
-            className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden transition-colors"
+            className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden transition-colors"
           />
           {errors.nickname && <p className="text-[11px] text-[#E03E3E] mt-1">{errors.nickname}</p>}
         </div>
@@ -152,7 +152,7 @@ export const CardFormModal: React.FC<CardFormModalProps> = ({
               placeholder="4321"
               value={last4}
               onChange={(e) => setLast4(e.target.value.replace(/\D/g, ''))}
-              className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden transition-colors font-mono tracking-wider"
+              className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden transition-colors font-mono tracking-wider"
             />
             {errors.last4 && <p className="text-[11px] text-[#E03E3E] mt-1">{errors.last4}</p>}
           </div>
@@ -162,13 +162,13 @@ export const CardFormModal: React.FC<CardFormModalProps> = ({
               Total Credit Limit (₹) <span className="text-[#E03E3E]">*</span>
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-2 text-sm text-[#787774]">₹</span>
+              <span className="absolute left-3 top-2 text-sm text-[#5F5E5B]">₹</span>
               <input
                 type="text"
                 placeholder="1,50,000"
                 value={limitRupees}
                 onChange={(e) => setLimitRupees(e.target.value)}
-                className="w-full rounded border border-[#E9E9E7] bg-white pl-7 pr-3 py-2 text-sm text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden transition-colors"
+                className="w-full rounded border border-[#E9E9E7] bg-white pl-7 pr-3 py-2 text-sm text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden transition-colors"
               />
             </div>
             {errors.limit && <p className="text-[11px] text-[#E03E3E] mt-1">{errors.limit}</p>}
@@ -188,9 +188,9 @@ export const CardFormModal: React.FC<CardFormModalProps> = ({
               placeholder="15"
               value={statementDay}
               onChange={(e) => setStatementDay(e.target.value)}
-              className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden transition-colors"
+              className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden transition-colors"
             />
-            <p className="text-[11px] text-[#787774] mt-0.5">Day of month (1 to 31)</p>
+            <p className="text-[11px] text-[#5F5E5B] mt-0.5">Day of month (1 to 31)</p>
             {errors.statementDay && (
               <p className="text-[11px] text-[#E03E3E] mt-0.5">{errors.statementDay}</p>
             )}
@@ -207,9 +207,9 @@ export const CardFormModal: React.FC<CardFormModalProps> = ({
               placeholder="5"
               value={dueDay}
               onChange={(e) => setDueDay(e.target.value)}
-              className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#787774] focus:border-[#37352F] focus:outline-hidden transition-colors"
+              className="w-full rounded border border-[#E9E9E7] bg-white px-3 py-2 text-sm text-[#37352F] placeholder-[#5F5E5B] focus:border-[#37352F] focus:outline-hidden transition-colors"
             />
-            <p className="text-[11px] text-[#787774] mt-0.5">Day of month (1 to 31)</p>
+            <p className="text-[11px] text-[#5F5E5B] mt-0.5">Day of month (1 to 31)</p>
             {errors.dueDay && <p className="text-[11px] text-[#E03E3E] mt-0.5">{errors.dueDay}</p>}
           </div>
         </div>

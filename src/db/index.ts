@@ -12,7 +12,7 @@ export const DEFAULT_CATEGORIES: Omit<Category, 'id'>[] = [
   { name: 'Subscriptions', color: '#5C3882', isDefault: true },
   { name: 'Health', color: '#DF5452', isDefault: true },
   { name: 'Education', color: '#337EA9', isDefault: true },
-  { name: 'Other', color: '#787774', isDefault: true },
+  { name: 'Other', color: '#5F5E5B', isDefault: true },
 ];
 
 export const DEFAULT_SETTINGS: Settings = {

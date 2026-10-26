@@ -31,7 +31,7 @@ const PALETTE = [
   '#6B46C1', // purple
   '#4D6461', // sage
   '#AD1A72', // rose
-  '#787774', // slate
+  '#5F5E5B', // slate
   '#337EA9', // cyan
   '#DF5452', // coral
   '#C05621', // rust
@@ -130,7 +130,7 @@ export const ChartsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-[#37352F]">Analytics & Trends</h1>
-          <p className="text-sm text-[#787774] mt-0.5">
+          <p className="text-sm text-[#5F5E5B] mt-0.5">
             Spending breakdowns and historical month-over-month comparisons
           </p>
         </div>
@@ -171,11 +171,11 @@ export const ChartsPage: React.FC = () => {
 
       {!hasData ? (
         <div className="rounded border border-[#E9E9E7] bg-white p-12 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#787774] mb-3">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F6F3] text-[#5F5E5B] mb-3">
             <PieChartIcon className="h-6 w-6" />
           </div>
           <h3 className="text-base font-medium text-[#37352F]">No spend analytics yet</h3>
-          <p className="text-sm text-[#787774] max-w-sm mx-auto mt-1">
+          <p className="text-sm text-[#5F5E5B] max-w-sm mx-auto mt-1">
             Log transactions to visualize category breakdowns and compare spending trends across billing cycles.
           </p>
         </div>
@@ -189,7 +189,7 @@ export const ChartsPage: React.FC = () => {
                   Cycle Spending Breakdown
                 </h2>
                 {activeCycle && (
-                  <p className="text-xs text-[#787774] mt-0.5">
+                  <p className="text-xs text-[#5F5E5B] mt-0.5">
                     Cycle: {formatDisplayDate(activeCycle.start, 'dd MMM yyyy')} –{' '}
                     {formatDisplayDate(activeCycle.end, 'dd MMM yyyy')}
                   </p>
@@ -205,7 +205,7 @@ export const ChartsPage: React.FC = () => {
                     }
                     disabled={selectedCycleIndex >= availableCycles.length - 1}
                     title="Previous cycle"
-                    className="flex h-6 w-6 items-center justify-center rounded text-[#787774] hover:bg-[#EFEFEF] disabled:opacity-30 cursor-pointer"
+                    className="flex h-6 w-6 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#EFEFEF] disabled:opacity-30 cursor-pointer"
                   >
                     <ChevronLeft className="h-3.5 w-3.5" />
                   </button>
@@ -216,7 +216,7 @@ export const ChartsPage: React.FC = () => {
                     onClick={() => setSelectedCycleIndex((prev) => Math.max(0, prev - 1))}
                     disabled={selectedCycleIndex <= 0}
                     title="Next cycle"
-                    className="flex h-6 w-6 items-center justify-center rounded text-[#787774] hover:bg-[#EFEFEF] disabled:opacity-30 cursor-pointer"
+                    className="flex h-6 w-6 items-center justify-center rounded text-[#5F5E5B] hover:bg-[#EFEFEF] disabled:opacity-30 cursor-pointer"
                   >
                     <ChevronRight className="h-3.5 w-3.5" />
                   </button>
@@ -225,7 +225,7 @@ export const ChartsPage: React.FC = () => {
             </div>
 
             {categoryChartData.length === 0 ? (
-              <div className="py-12 text-center text-xs text-[#787774]">
+              <div className="py-12 text-center text-xs text-[#5F5E5B]">
                 No expenses logged in this cycle date range.
               </div>
             ) : (
@@ -264,7 +264,7 @@ export const ChartsPage: React.FC = () => {
                   </ResponsiveContainer>
                   {/* Center Stat */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <span className="text-[11px] font-medium text-[#787774] uppercase tracking-wider">
+                    <span className="text-[11px] font-medium text-[#5F5E5B] uppercase tracking-wider">
                       Total
                     </span>
                     <span className="text-sm font-bold text-[#37352F]">
@@ -290,7 +290,7 @@ export const ChartsPage: React.FC = () => {
                           <span className="font-medium text-[#37352F]">{entry.name}</span>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-[#787774] font-mono text-[11px]">{percentage}%</span>
+                          <span className="text-[#5F5E5B] font-mono text-[11px]">{percentage}%</span>
                           <span className="font-semibold text-[#37352F]">
                             {formatINR(entry.value * 100)}
                           </span>
@@ -310,11 +310,11 @@ export const ChartsPage: React.FC = () => {
                 <h2 className="text-sm font-semibold text-[#37352F] tracking-tight">
                   Month-over-Month Spend (Last 6 Months)
                 </h2>
-                <p className="text-xs text-[#787774] mt-0.5">
+                <p className="text-xs text-[#5F5E5B] mt-0.5">
                   Calendar month totals (expenses minus refunds)
                 </p>
               </div>
-              <BarChart3 className="h-4 w-4 text-[#787774]" />
+              <BarChart3 className="h-4 w-4 text-[#5F5E5B]" />
             </div>
 
             <div className="h-64">
@@ -322,13 +322,13 @@ export const ChartsPage: React.FC = () => {
                 <BarChart data={monthlyChartData} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}>
                   <XAxis
                     dataKey="name"
-                    stroke="#787774"
+                    stroke="#5F5E5B"
                     fontSize={11}
                     tickLine={false}
                     axisLine={{ stroke: '#E9E9E7' }}
                   />
                   <YAxis
-                    stroke="#787774"
+                    stroke="#5F5E5B"
                     fontSize={11}
                     tickLine={false}
                     axisLine={{ stroke: '#E9E9E7' }}
