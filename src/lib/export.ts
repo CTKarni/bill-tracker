@@ -16,6 +16,18 @@ export interface ExportRow {
   'Reimbursement Status': string;
 }
 
+/**
+ * Neutralizes CSV/Excel formula injection.
+ * Any text value starting with '=', '+', '-', '@', tab, or carriage return is prefixed with a single quote.
+ */
+export function sanitizeFormulaInjection(value: string): string {
+  if (!value || typeof value !== 'string') return '';
+  if (/^[=+\-@\t\r]/.test(value)) {
+    return `'${value}`;
+  }
+  return value;
+}
+
 export function prepareExportData(
   transactions: Transaction[],
   cards: Card[],
@@ -34,15 +46,15 @@ export function prepareExportData(
 
     return {
       Date: t.date,
-      Card: cardName,
-      Type: t.type.charAt(0).toUpperCase() + t.type.slice(1),
-      Category: catName,
+      Card: sanitizeFormulaInjection(cardName),
+      Type: sanitizeFormulaInjection(t.type.charAt(0).toUpperCase() + t.type.slice(1)),
+      Category: sanitizeFormulaInjection(catName),
       'Amount (₹)': amountRupees,
-      Note: t.note || '',
+      Note: sanitizeFormulaInjection(t.note || ''),
       Recurring: t.isRecurring ? 'Yes' : 'No',
-      Frequency: t.isRecurring ? t.recurringFrequency || 'Monthly' : '—',
+      Frequency: sanitizeFormulaInjection(t.isRecurring ? t.recurringFrequency || 'Monthly' : '—'),
       Reimbursable: t.isReimbursable ? 'Yes' : 'No',
-      'Reimbursed From': t.reimbursableFrom || '—',
+      'Reimbursed From': sanitizeFormulaInjection(t.reimbursableFrom || '—'),
       'Reimbursement Status': !t.isReimbursable
         ? '—'
         : t.isReimbursed

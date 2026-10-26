@@ -2,6 +2,19 @@ import type { Card } from '../types';
 import { getCycles } from './finance';
 
 /**
+ * Escapes text for iCalendar (RFC 5545).
+ * Escapes backslashes, semicolons, commas, and newlines to prevent calendar injection.
+ */
+export function escapeICSText(value: string): string {
+  if (!value || typeof value !== 'string') return '';
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,')
+    .replace(/\r?\n/g, '\\n');
+}
+
+/**
  * Generates an iCalendar (.ics) string for credit card payment due dates.
  * Includes upcoming due dates for all cards with an alarm trigger reminderDaysBeforeDue days before.
  */
@@ -22,6 +35,8 @@ export function generateICSCalendar(cards: Card[], reminderDaysBeforeDue: number
   cards.forEach((card) => {
     // Generate next 3 billing cycles for this card
     const cycles = getCycles(card, 3);
+    const safeNickname = escapeICSText(card.nickname);
+    const safeLast4 = escapeICSText(card.last4);
 
     cycles.forEach((cycle) => {
       const dueDateClean = cycle.dueDate.replace(/-/g, '');
@@ -33,9 +48,9 @@ export function generateICSCalendar(cards: Card[], reminderDaysBeforeDue: number
       // All-day event on the due date
       lines.push(`DTSTART;VALUE=DATE:${dueDateClean}`);
       lines.push(`DTEND;VALUE=DATE:${dueDateClean}`);
-      lines.push(`SUMMARY:Pay ${card.nickname} (•••• ${card.last4}) Bill`);
+      lines.push(`SUMMARY:Pay ${safeNickname} (•••• ${safeLast4}) Bill`);
       lines.push(
-        `DESCRIPTION:Credit card payment due for ${card.nickname} (•••• ${card.last4}). Statement cycle closed on ${cycle.statementDate}.`
+        `DESCRIPTION:Credit card payment due for ${safeNickname} (•••• ${safeLast4}). Statement cycle closed on ${cycle.statementDate}.`
       );
       lines.push('STATUS:CONFIRMED');
 
@@ -43,7 +58,7 @@ export function generateICSCalendar(cards: Card[], reminderDaysBeforeDue: number
       lines.push('BEGIN:VALARM');
       lines.push(`TRIGGER:-P${Math.max(1, reminderDaysBeforeDue)}D`);
       lines.push('ACTION:DISPLAY');
-      lines.push(`DESCRIPTION:Reminder: Pay ${card.nickname} bill in ${reminderDaysBeforeDue} days`);
+      lines.push(`DESCRIPTION:Reminder: Pay ${safeNickname} bill in ${reminderDaysBeforeDue} days`);
       lines.push('END:VALARM');
 
       lines.push('END:VEVENT');
