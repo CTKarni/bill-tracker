@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { Card } from '../types';
 import { Modal } from './Modal';
-import { parseINRInput, paiseToInputString } from '../lib/format';
+import { parseINRInput, paiseToInputString, validateAmount } from '../lib/format';
 
 interface CardFormModalProps {
   isOpen: boolean;
@@ -66,9 +66,9 @@ export const CardFormModal: React.FC<CardFormModalProps> = ({
       newErrors.last4 = 'Last 4 digits must be exactly 4 numbers';
     }
 
-    const limitPaise = parseINRInput(limitRupees);
-    if (limitPaise <= 0) {
-      newErrors.limit = 'Credit limit must be greater than ₹0';
+    const limitValidation = validateAmount(limitRupees);
+    if (!limitValidation.valid) {
+      newErrors.limit = limitValidation.error || 'Credit limit must be greater than ₹0';
     }
 
     const sDay = parseInt(statementDay, 10);

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatINR, parseINRInput, paiseToInputString } from './format';
+import { formatINR, parseINRInput, paiseToInputString, validateAmount } from './format';
 
 describe('formatINR', () => {
   it('formats whole rupees correctly with Indian digit grouping', () => {
@@ -65,3 +65,51 @@ describe('paiseToInputString', () => {
     expect(paiseToInputString(0)).toBe('');
   });
 });
+
+describe('validateAmount', () => {
+  it('accepts valid amounts', () => {
+    expect(validateAmount('500')).toEqual({ valid: true, paise: 50000 });
+    expect(validateAmount('1250.50')).toEqual({ valid: true, paise: 125050 });
+    expect(validateAmount('₹1,25,000.50')).toEqual({ valid: true, paise: 12500050 });
+  });
+
+  it('rejects empty input', () => {
+    expect(validateAmount('').valid).toBe(false);
+    expect(validateAmount('   ').valid).toBe(false);
+  });
+
+  it('rejects zero when allowZero is false or default', () => {
+    expect(validateAmount('0').valid).toBe(false);
+    expect(validateAmount('0.00').valid).toBe(false);
+    expect(validateAmount('0', { allowZero: true }).valid).toBe(true);
+  });
+
+  it('rejects negative numbers', () => {
+    expect(validateAmount('-100').valid).toBe(false);
+    expect(validateAmount('-0.50').valid).toBe(false);
+  });
+
+  it('rejects scientific notation (e.g. 1e5)', () => {
+    expect(validateAmount('1e5').valid).toBe(false);
+    expect(validateAmount('2.5e3').valid).toBe(false);
+    expect(validateAmount('1E6').valid).toBe(false);
+  });
+
+  it('rejects more than 2 decimal places', () => {
+    expect(validateAmount('10.999').valid).toBe(false);
+    expect(validateAmount('0.123').valid).toBe(false);
+  });
+
+  it('rejects NaN, Infinity, and invalid characters', () => {
+    expect(validateAmount('abc').valid).toBe(false);
+    expect(validateAmount('Infinity').valid).toBe(false);
+    expect(validateAmount('NaN').valid).toBe(false);
+    expect(validateAmount('12.34.56').valid).toBe(false);
+  });
+
+  it('rejects extremely large values exceeding limit', () => {
+    // 100 Crore is 100,00,00,000
+    expect(validateAmount('1000000001').valid).toBe(false);
+  });
+});
+

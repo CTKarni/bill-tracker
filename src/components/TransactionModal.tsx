@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db';
 import type { Transaction, TransactionType } from '../types';
 import { Modal } from './Modal';
-import { parseINRInput, paiseToInputString } from '../lib/format';
+import { parseINRInput, paiseToInputString, validateAmount } from '../lib/format';
 import { todayISO } from '../lib/dates';
 import { ArrowDownLeft, ArrowUpRight, RotateCcw } from 'lucide-react';
 
@@ -105,9 +105,9 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    const amountPaise = parseINRInput(amountRupees);
-    if (amountPaise <= 0) {
-      newErrors.amount = 'Amount must be greater than ₹0';
+    const amountValidation = validateAmount(amountRupees);
+    if (!amountValidation.valid) {
+      newErrors.amount = amountValidation.error || 'Amount must be greater than ₹0';
     }
 
     if (!cardId) {

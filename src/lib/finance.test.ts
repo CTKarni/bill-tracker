@@ -418,4 +418,56 @@ describe('Finance Logic - Totals, Budgets, and Bill Match', () => {
     expect(march).toBeDefined();
     expect(march?.spend).toBe(950000);
   });
+
+  it('handles refund larger than original expense (net negative cycle spend and negative outstanding)', () => {
+    const refundHeavyTxns: Transaction[] = [
+      {
+        id: '1',
+        cardId: 'c1',
+        type: 'expense',
+        amount: 200000, // ₹2,000 expense
+        date: '2026-03-05',
+        isRecurring: false,
+        isReimbursable: false,
+        isReimbursed: false,
+        createdAt: Date.now(),
+      },
+      {
+        id: '2',
+        cardId: 'c1',
+        type: 'refund',
+        amount: 500000, // ₹5,000 refund (larger than expense)
+        date: '2026-03-10',
+        isRecurring: false,
+        isReimbursable: false,
+        isReimbursed: false,
+        createdAt: Date.now(),
+      },
+    ];
+
+    // Cycle spend: 2000 - 5000 = -3000 rupees (-300000 paise)
+    const spend = cycleSpend(refundHeavyTxns, cycle);
+    expect(spend).toBe(-300000);
+
+    // Outstanding: -300000 paise
+    const outstanding = calculateOutstanding(refundHeavyTxns, 'c1');
+    expect(outstanding).toBe(-300000);
+  });
+
+  it('adding 10 paise + 20 paise repeatedly gives an exact integer total without float drift', () => {
+    // In IEEE-754 float: 0.10 + 0.20 = 0.30000000000000004
+    // With integer paise arithmetic: 10 + 20 = 30 exactly.
+    let totalPaise = 0;
+    const tenPaise = 10;
+    const twentyPaise = 20;
+
+    for (let i = 0; i < 1000; i++) {
+      totalPaise += tenPaise + twentyPaise;
+    }
+
+    // 1000 iterations of 30 paise = 30,000 paise (₹300.00)
+    expect(totalPaise).toBe(30000);
+    expect(Number.isInteger(totalPaise)).toBe(true);
+  });
 });
+

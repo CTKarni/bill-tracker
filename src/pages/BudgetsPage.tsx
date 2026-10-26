@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db';
 import type { Category } from '../types';
 import { Modal } from '../components/Modal';
-import { formatINR, parseINRInput, paiseToInputString } from '../lib/format';
+import { formatINR, parseINRInput, paiseToInputString, validateAmount } from '../lib/format';
 import { todayISO } from '../lib/dates';
 import { getCycle, budgetStatus } from '../lib/finance';
 import {
@@ -15,6 +15,7 @@ import {
 export const BudgetsPage: React.FC = () => {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [budgetRupees, setBudgetRupees] = useState('');
+  const [budgetError, setBudgetError] = useState('');
   const [saving, setSaving] = useState(false);
 
   const categories = useLiveQuery(() => db.categories.toArray());
@@ -59,11 +60,20 @@ export const BudgetsPage: React.FC = () => {
   const handleOpenEdit = (category: Category) => {
     setEditingCategory(category);
     setBudgetRupees(category.monthlyBudget ? paiseToInputString(category.monthlyBudget) : '');
+    setBudgetError('');
   };
 
   const handleSaveBudget = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingCategory) return;
+
+    if (budgetRupees.trim()) {
+      const check = validateAmount(budgetRupees, { allowZero: true });
+      if (!check.valid) {
+        setBudgetError(check.error || 'Please enter a valid amount');
+        return;
+      }
+    }
 
     setSaving(true);
     try {
@@ -74,6 +84,7 @@ export const BudgetsPage: React.FC = () => {
       setEditingCategory(null);
     } catch (err) {
       console.error('Failed to update category budget:', err);
+      setBudgetError('Failed to save budget.');
     } finally {
       setSaving(false);
     }
@@ -332,6 +343,9 @@ export const BudgetsPage: React.FC = () => {
             <p className="text-[11px] text-[#787774] mt-1">
               Leave blank or 0 to remove budget for this category.
             </p>
+            {budgetError && (
+              <p className="text-[11px] text-[#E03E3E] mt-1">{budgetError}</p>
+            )}
           </div>
 
           <div className="flex items-center justify-between pt-3 border-t border-[#E9E9E7]">

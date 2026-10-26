@@ -28,4 +28,33 @@ describe('dates utilities', () => {
     expect(daysBetween('2026-10-15', '2026-10-01')).toBe(-14);
     expect(daysBetween('2026-10-15', '2026-10-15')).toBe(0);
   });
+
+  it('guarantees dates never shift by one day (immune to UTC midnight timezone bugs)', () => {
+    // Test end of month, leap days, and year boundary
+    const testDates = [
+      '2026-01-01',
+      '2026-02-28',
+      '2024-02-29', // leap day
+      '2026-03-31',
+      '2026-04-30',
+      '2026-12-31',
+    ];
+
+    testDates.forEach((iso) => {
+      const parsed = parseISODate(iso);
+      // Day, month, and year in local time must strictly match parts
+      const [y, m, d] = iso.split('-').map(Number);
+      expect(parsed.getFullYear()).toBe(y);
+      expect(parsed.getMonth()).toBe(m - 1);
+      expect(parsed.getDate()).toBe(d);
+
+      // Re-formatting must be identical
+      expect(formatISODate(parsed)).toBe(iso);
+
+      // Display formatting must retain the exact day
+      const display = formatDisplayDate(iso, 'yyyy-MM-dd');
+      expect(display).toBe(iso);
+    });
+  });
 });
+
