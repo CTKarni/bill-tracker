@@ -7,6 +7,7 @@ import { ConfirmDialog } from '../components/ConfirmDialog';
 import { formatINR, parseINRInput } from '../lib/format';
 import { formatDisplayDate, todayISO } from '../lib/dates';
 import { getCycles, cycleSpend, billMatch } from '../lib/finance';
+import { downloadCSV, downloadExcel } from '../lib/export';
 import {
   ArrowLeftRight,
   Plus,
@@ -24,6 +25,8 @@ import {
   ChevronRight,
   FileCheck2,
   AlertCircle,
+  Download,
+  FileSpreadsheet,
 } from 'lucide-react';
 
 export const TransactionsPage: React.FC = () => {
@@ -279,13 +282,37 @@ export const TransactionsPage: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={handleOpenAdd}
-          className="inline-flex items-center gap-1.5 rounded bg-[#37352F] px-3.5 py-2 text-xs font-medium text-white hover:bg-[#201F1D] active:scale-95 transition-all shadow-xs cursor-pointer self-start sm:self-auto"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Add Transaction (N)</span>
-        </button>
+        <div className="flex items-center gap-2 flex-wrap self-start sm:self-auto">
+          {sortedTransactions.length > 0 && (
+            <>
+              <button
+                onClick={() => downloadCSV(sortedTransactions, cards || [], categories || [])}
+                title="Export filtered transactions to CSV"
+                className="inline-flex items-center gap-1.5 rounded border border-[#E9E9E7] bg-white px-3 py-2 text-xs font-medium text-[#37352F] hover:bg-[#F1F1EF] transition-colors cursor-pointer"
+              >
+                <Download className="h-3.5 w-3.5 text-[#787774]" />
+                <span>Export CSV</span>
+              </button>
+
+              <button
+                onClick={() => downloadExcel(sortedTransactions, cards || [], categories || [])}
+                title="Export filtered transactions to Excel"
+                className="inline-flex items-center gap-1.5 rounded border border-[#E9E9E7] bg-white px-3 py-2 text-xs font-medium text-[#37352F] hover:bg-[#F1F1EF] transition-colors cursor-pointer"
+              >
+                <FileSpreadsheet className="h-3.5 w-3.5 text-[#0F7B6C]" />
+                <span>Export Excel</span>
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={handleOpenAdd}
+            className="inline-flex items-center gap-1.5 rounded bg-[#37352F] px-3.5 py-2 text-xs font-medium text-white hover:bg-[#201F1D] active:scale-95 transition-all shadow-xs cursor-pointer"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add Transaction (N)</span>
+          </button>
+        </div>
       </div>
 
       {/* View Mode Tabs: All Transactions vs Billing Cycle View */}
