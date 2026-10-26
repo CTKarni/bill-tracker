@@ -12,6 +12,7 @@ interface TransactionModalProps {
   onClose: () => void;
   transactionToEdit?: Transaction | null;
   onSave?: () => void;
+  defaultRecurring?: boolean;
 }
 
 const LAST_USED_CARD_KEY = 'card_tracker_last_card_id';
@@ -21,6 +22,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
   onClose,
   transactionToEdit,
   onSave,
+  defaultRecurring = false,
 }) => {
   const cards = useLiveQuery(() => db.cards.orderBy('createdAt').reverse().toArray());
   const categories = useLiveQuery(() => db.categories.toArray());
@@ -60,7 +62,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
         setAmountRupees('');
         setDate(todayISO());
         setNote('');
-        setIsRecurring(false);
+        setIsRecurring(defaultRecurring);
         setRecurringFrequency('monthly');
         setIsReimbursable(false);
         setReimbursableFrom('');
@@ -372,6 +374,35 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 />
               </div>
             )}
+          </div>
+
+          {/* Recurring / Subscription Section */}
+          <div className="pt-2 border-t border-[#E9E9E7]">
+            <div className="flex items-center justify-between">
+              <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[#37352F]">
+                <input
+                  type="checkbox"
+                  checked={isRecurring}
+                  onChange={(e) => setIsRecurring(e.target.checked)}
+                  className="rounded border-[#E9E9E7] text-[#37352F] focus:ring-0"
+                />
+                <span>Recurring subscription</span>
+              </label>
+
+              {isRecurring && (
+                <div className="flex items-center gap-1.5 text-xs">
+                  <span className="text-[#787774]">Frequency:</span>
+                  <select
+                    value={recurringFrequency}
+                    onChange={(e) => setRecurringFrequency(e.target.value as 'monthly' | 'yearly')}
+                    className="rounded border border-[#E9E9E7] bg-white px-2 py-1 text-xs text-[#37352F] focus:outline-hidden"
+                  >
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                  </select>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Action Buttons */}

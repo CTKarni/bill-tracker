@@ -12,6 +12,7 @@ import {
   daysLeftInCycle,
   daysUntilDue,
   cycleSpend,
+  budgetStatus,
 } from '../lib/finance';
 import {
   CreditCard,
@@ -23,6 +24,8 @@ import {
   ArrowDownLeft,
   ArrowUpRight,
   RotateCcw,
+  UserCheck,
+  PiggyBank,
 } from 'lucide-react';
 import { TransactionModal } from '../components/TransactionModal';
 
@@ -48,6 +51,7 @@ export const DashboardPage: React.FC = () => {
 
   const today = todayISO();
   const reminderDays = settings?.reminderDaysBeforeDue ?? 3;
+  const alertPercent = settings?.budgetAlertPercent ?? 80;
 
   // Aggregate stats across all cards
   const stats = React.useMemo(() => {
@@ -87,6 +91,51 @@ export const DashboardPage: React.FC = () => {
       .filter((item) => item.dueDays <= reminderDays && item.outstanding > 0);
   }, [cards, transactions, today, reminderDays]);
 
+  // Category budget alerts (at alertPercent or over 100%)
+  const budgetAlerts = React.useMemo(() => {
+    if (!categories || !transactions) return [];
+
+    const spendMap = new Map<string, number>();
+    const currentMonthPrefix = today.slice(0, 7);
+    transactions.forEach((t) => {
+      if (t.categoryId && t.date.startsWith(currentMonthPrefix)) {
+        const delta = t.type === 'expense' ? t.amount : t.type === 'refund' ? -t.amount : 0;
+        spendMap.set(t.categoryId, (spendMap.get(t.categoryId) || 0) + delta);
+      }
+    });
+
+    return categories
+      .filter((c) => (c.monthlyBudget ?? 0) > 0)
+      .map((cat) => {
+        const spent = Math.max(0, spendMap.get(cat.id) || 0);
+        const status = budgetStatus(spent, cat.monthlyBudget!, alertPercent);
+        return { cat, spent, status };
+      })
+      .filter((item) => item.status.status === 'warning' || item.status.status === 'over');
+  }, [categories, transactions, today, alertPercent]);
+
+  // Reimbursable summary (unreimbursed totals grouped by person)
+  const reimbursableSummary = React.useMemo(() => {
+    if (!transactions) return { totalOwed: 0, byPerson: [] };
+
+    const unreimbursed = transactions.filter((t) => t.isReimbursable && !t.isReimbursed);
+    let totalOwed = 0;
+    const personMap = new Map<string, number>();
+
+    unreimbursed.forEach((t) => {
+      totalOwed += t.amount;
+      const person = t.reimbursableFrom?.trim() || 'Unspecified';
+      personMap.set(person, (personMap.get(person) || 0) + t.amount);
+    });
+
+    const byPerson = Array.from(personMap.entries()).map(([person, amount]) => ({
+      person,
+      amount,
+    }));
+
+    return { totalOwed, byPerson };
+  }, [transactions]);
+
   // Recent 5 transactions
   const recentTransactions = React.useMemo(() => {
     if (!transactions) return [];
@@ -102,53 +151,85 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Due Date Alert Banners */}
-      {dueAlerts.length > 0 && (
-        <div className="space-y-2">
-          {dueAlerts.map(({ card, cycle, dueDays, outstanding }) => {
-            const isOverdue = dueDays < 0;
-            return (
-              <div
-                key={card.id}
-                className={`flex items-center justify-between gap-3 rounded border p-3.5 text-xs ${
-                  isOverdue
-                    ? 'border-[#E03E3E] bg-[#FBE4E4] text-[#E03E3E]'
-                    : 'border-[#D9730D] bg-[#FBF3DB] text-[#8C4600]'
-                }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <AlertTriangle className="h-4 w-4 shrink-0" />
-                  <div>
-                    <span className="font-semibold">
-                      {isOverdue ? 'Payment Overdue: ' : 'Payment Due Soon: '}
-                    </span>
-                    <span>
-                      {card.nickname} (•••• {card.last4}) bill of{' '}
-                      <strong>{formatINR(outstanding)}</strong> is{' '}
-                      {isOverdue
-                        ? `${Math.abs(dueDays)} days overdue (was due ${formatDisplayDate(
-                            cycle.dueDate,
-                            'dd MMM'
-                          )})`
-                        : dueDays === 0
-                        ? `due TODAY (${formatDisplayDate(cycle.dueDate, 'dd MMM')})`
-                        : `due on ${formatDisplayDate(cycle.dueDate, 'dd MMM')} (in ${dueDays} days)`}
-                      .
-                    </span>
-                  </div>
+      {/* Alert Banners (Due Date & Budget Alerts) */}
+      <div className="space-y-2">
+        {dueAlerts.map(({ card, cycle, dueDays, outstanding }) => {
+          const isOverdue = dueDays < 0;
+          return (
+            <div
+              key={card.id}
+              className={`flex items-center justify-between gap-3 rounded border p-3.5 text-xs ${
+                isOverdue
+                  ? 'border-[#E03E3E] bg-[#FBE4E4] text-[#E03E3E]'
+                  : 'border-[#D9730D] bg-[#FBF3DB] text-[#8C4600]'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <AlertTriangle className="h-4 w-4 shrink-0" />
+                <div>
+                  <span className="font-semibold">
+                    {isOverdue ? 'Payment Overdue: ' : 'Payment Due Soon: '}
+                  </span>
+                  <span>
+                    {card.nickname} (•••• {card.last4}) bill of{' '}
+                    <strong>{formatINR(outstanding)}</strong> is{' '}
+                    {isOverdue
+                      ? `${Math.abs(dueDays)} days overdue (was due ${formatDisplayDate(
+                          cycle.dueDate,
+                          'dd MMM'
+                        )})`
+                      : dueDays === 0
+                      ? `due TODAY (${formatDisplayDate(cycle.dueDate, 'dd MMM')})`
+                      : `due on ${formatDisplayDate(cycle.dueDate, 'dd MMM')} (in ${dueDays} days)`}
+                    .
+                  </span>
                 </div>
-
-                <Link
-                  to="/transactions"
-                  className="shrink-0 rounded bg-white/80 px-2.5 py-1 text-[11px] font-semibold text-[#37352F] hover:bg-white transition-colors"
-                >
-                  Pay Now
-                </Link>
               </div>
-            );
-          })}
-        </div>
-      )}
+
+              <Link
+                to="/transactions"
+                className="shrink-0 rounded bg-white/80 px-2.5 py-1 text-[11px] font-semibold text-[#37352F] hover:bg-white transition-colors"
+              >
+                Pay Now
+              </Link>
+            </div>
+          );
+        })}
+
+        {budgetAlerts.map(({ cat, spent, status }) => {
+          const isOver = status.status === 'over';
+          return (
+            <div
+              key={cat.id}
+              className={`flex items-center justify-between gap-3 rounded border p-3.5 text-xs ${
+                isOver
+                  ? 'border-[#E03E3E] bg-[#FBE4E4] text-[#E03E3E]'
+                  : 'border-[#D9730D] bg-[#FBF3DB] text-[#8C4600]'
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <PiggyBank className="h-4 w-4 shrink-0" />
+                <div>
+                  <span className="font-semibold">
+                    {isOver ? 'Budget Exceeded: ' : 'Budget Warning: '}
+                  </span>
+                  <span>
+                    <strong>{cat.name}</strong> is at {status.percent}% of its{' '}
+                    {formatINR(cat.monthlyBudget!)} budget ({formatINR(spent)} spent).
+                  </span>
+                </div>
+              </div>
+
+              <Link
+                to="/budgets"
+                className="shrink-0 rounded bg-white/80 px-2.5 py-1 text-[11px] font-semibold text-[#37352F] hover:bg-white transition-colors"
+              >
+                Adjust Budget
+              </Link>
+            </div>
+          );
+        })}
+      </div>
 
       {/* Dashboard Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -240,6 +321,38 @@ export const DashboardPage: React.FC = () => {
               </span>
             </div>
           </div>
+
+          {/* Reimbursable Summary Section (if owed) */}
+          {reimbursableSummary.totalOwed > 0 && (
+            <div className="rounded border border-[#E9E9E7] bg-white p-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <UserCheck className="h-4 w-4 text-[#D9730D]" />
+                  <h2 className="text-sm font-semibold text-[#37352F] tracking-tight">
+                    Reimbursements Owed to You: {formatINR(reimbursableSummary.totalOwed)}
+                  </h2>
+                </div>
+                <Link
+                  to="/transactions"
+                  className="text-xs text-[#787774] hover:text-[#37352F] transition-colors"
+                >
+                  View details
+                </Link>
+              </div>
+
+              <div className="flex items-center gap-2 flex-wrap pt-1">
+                {reimbursableSummary.byPerson.map((item) => (
+                  <span
+                    key={item.person}
+                    className="inline-flex items-center gap-1.5 rounded bg-[#FBF3DB] px-2.5 py-1 text-xs text-[#8C4600] font-medium"
+                  >
+                    <span>{item.person}:</span>
+                    <strong className="text-[#37352F]">{formatINR(item.amount)}</strong>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Cards Breakdown List */}
           <div>
