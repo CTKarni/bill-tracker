@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env*
+!.env.example
+
+# Backups and exported user data
+*.csv
+*.xlsx
+*.ics
+*backup*.json
+credit_card_*
+
