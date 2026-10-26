@@ -23,7 +23,7 @@
     "react-router-dom": "^7.18.4",
     "recharts": "^3.10.1",
     "vite-plugin-pwa": "^2.0.0",
-    "xlsx": "^0.18.5",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz",
     "zod": "^4.6.7"
   },
   "devDependencies": {
