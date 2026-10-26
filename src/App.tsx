@@ -10,6 +10,8 @@ import { ChartsPage } from './pages/ChartsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { initializeDatabase } from './db';
 
+import { ErrorBoundary } from './components/ErrorBoundary';
+
 export const App: React.FC = () => {
   const [dbReady, setDbReady] = useState(false);
   const [dbError, setDbError] = useState<string | null>(null);
@@ -38,6 +40,9 @@ export const App: React.FC = () => {
           <p className="text-sm text-[#37352F] mt-2">
             Could not initialize local browser storage: {dbError}
           </p>
+          <p className="text-xs text-[#787774] mt-3">
+            Please make sure third-party storage or IndexedDB is enabled in your browser settings.
+          </p>
         </div>
       </div>
     );
@@ -55,20 +60,22 @@ export const App: React.FC = () => {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<DashboardPage />} />
-          <Route path="cards" element={<CardsPage />} />
-          <Route path="transactions" element={<TransactionsPage />} />
-          <Route path="budgets" element={<BudgetsPage />} />
-          <Route path="subscriptions" element={<SubscriptionsPage />} />
-          <Route path="charts" element={<ChartsPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<ErrorBoundary fallbackTitle="Error loading Dashboard"><DashboardPage /></ErrorBoundary>} />
+            <Route path="cards" element={<ErrorBoundary fallbackTitle="Error loading Cards"><CardsPage /></ErrorBoundary>} />
+            <Route path="transactions" element={<ErrorBoundary fallbackTitle="Error loading Transactions"><TransactionsPage /></ErrorBoundary>} />
+            <Route path="budgets" element={<ErrorBoundary fallbackTitle="Error loading Budgets"><BudgetsPage /></ErrorBoundary>} />
+            <Route path="subscriptions" element={<ErrorBoundary fallbackTitle="Error loading Subscriptions"><SubscriptionsPage /></ErrorBoundary>} />
+            <Route path="charts" element={<ErrorBoundary fallbackTitle="Error loading Charts"><ChartsPage /></ErrorBoundary>} />
+            <Route path="settings" element={<ErrorBoundary fallbackTitle="Error loading Settings"><SettingsPage /></ErrorBoundary>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 };
 

@@ -197,6 +197,32 @@ export const TransactionsPage: React.FC = () => {
     });
   }, [filteredTransactions]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const PAGE_SIZE = 50;
+
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    searchQuery,
+    filterCardId,
+    filterCategoryId,
+    filterType,
+    filterReimbursable,
+    filterStartDate,
+    filterEndDate,
+    filterMinAmount,
+    filterMaxAmount,
+    viewMode,
+    selectedCycleIndex,
+    selectedCardId,
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedTransactions.length / PAGE_SIZE));
+  const paginatedTransactions = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return sortedTransactions.slice(start, start + PAGE_SIZE);
+  }, [sortedTransactions, currentPage]);
+
   // Filtered Totals
   const filteredTotals = useMemo(() => {
     let expenseSum = 0;
@@ -747,7 +773,7 @@ export const TransactionsPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E9E9E7] text-[#37352F]">
-                {sortedTransactions.map((txn) => {
+                {paginatedTransactions.map((txn) => {
                   const card = cardMap.get(txn.cardId);
                   const category = txn.categoryId ? categoryMap.get(txn.categoryId) : undefined;
 
@@ -899,6 +925,49 @@ export const TransactionsPage: React.FC = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {sortedTransactions.length > PAGE_SIZE && (
+            <div className="flex items-center justify-between px-4 py-3 border-t border-[#E9E9E7] bg-[#FBFBFA] text-xs text-[#787774]">
+              <div>
+                Showing{' '}
+                <span className="font-medium text-[#37352F]">
+                  {(currentPage - 1) * PAGE_SIZE + 1}
+                </span>{' '}
+                to{' '}
+                <span className="font-medium text-[#37352F]">
+                  {Math.min(currentPage * PAGE_SIZE, sortedTransactions.length)}
+                </span>{' '}
+                of{' '}
+                <span className="font-medium text-[#37352F]">
+                  {sortedTransactions.length}
+                </span>{' '}
+                transactions
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="inline-flex items-center gap-1 rounded border border-[#E9E9E7] bg-white px-2.5 py-1 font-medium text-[#37352F] hover:bg-[#F1F1EF] disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+                >
+                  <ChevronLeft className="h-3.5 w-3.5" />
+                  <span>Prev</span>
+                </button>
+                <span className="px-2 font-medium text-[#37352F]">
+                  {currentPage} / {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="inline-flex items-center gap-1 rounded border border-[#E9E9E7] bg-white px-2.5 py-1 font-medium text-[#37352F] hover:bg-[#F1F1EF] disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
