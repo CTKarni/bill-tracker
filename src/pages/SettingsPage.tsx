@@ -5,7 +5,8 @@ import type { Category } from '../types';
 import { Modal } from '../components/Modal';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { downloadCalendarICS } from '../lib/calendar';
-import { todayISO } from '../lib/dates';
+import { todayISO, formatDisplayDate, daysBetween } from '../lib/dates';
+import { validateBackupJSON, MAX_BACKUP_FILE_SIZE } from '../lib/backup';
 import {
   Sliders,
   Calendar,
@@ -181,14 +182,20 @@ export const SettingsPage: React.FC = () => {
       const allTransactions = await db.transactions.toArray();
       const currentSettings = await db.settings.get('main');
 
+      const today = todayISO();
+      await db.settings.update('main', { lastBackupDate: today });
+
       const backupData = {
         app: 'CreditCardExpenseTracker',
-        version: '1.0',
+        version: 1,
         exportedAt: new Date().toISOString(),
         cards: allCards,
         categories: allCategories,
         transactions: allTransactions,
-        settings: currentSettings,
+        settings: {
+          ...(currentSettings || DEFAULT_SETTINGS),
+          lastBackupDate: today,
+        },
       };
 
       const jsonStr = JSON.stringify(backupData, null, 2);
@@ -196,7 +203,7 @@ export const SettingsPage: React.FC = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', `credit_card_tracker_backup_${todayISO()}.json`);
+      link.setAttribute('download', `credit_card_tracker_backup_${today}.json`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -210,27 +217,41 @@ export const SettingsPage: React.FC = () => {
     }
   };
 
-  // Full Data Restore (JSON Import)
+  // Full Data Restore (JSON Import) with strict schema validation & size limit
   const handleImportBackupJSON = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > MAX_BACKUP_FILE_SIZE) {
+      setBackupNotice({ type: 'error', msg: 'Backup file exceeds 20 MB size limit.' });
+      e.target.value = '';
+      return;
+    }
+
+    if (!file.name.toLowerCase().endsWith('.json')) {
+      setBackupNotice({ type: 'error', msg: 'Invalid file type. Please upload a valid .json file.' });
+      e.target.value = '';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = async (event) => {
       try {
         const text = event.target?.result as string;
-        const data = JSON.parse(text);
+        const validation = validateBackupJSON(text);
 
-        if (!data || !Array.isArray(data.cards) || !Array.isArray(data.categories) || !Array.isArray(data.transactions)) {
-          throw new Error('Invalid backup file format.');
+        if (!validation.success || !validation.data) {
+          throw new Error(validation.error || 'Invalid backup file structure.');
         }
+
+        const data = validation.data;
 
         const confirmRestore = window.confirm(
           `This backup contains ${data.cards.length} cards, ${data.categories.length} categories, and ${data.transactions.length} transactions.\n\nRestoring will replace all current data. Proceed?`
         );
         if (!confirmRestore) return;
 
-        // Populate tables
+        // Atomically replace all data inside a Dexie transaction
         await db.transaction('rw', db.cards, db.categories, db.transactions, db.settings, async () => {
           await db.cards.clear();
           await db.categories.clear();
@@ -240,14 +261,21 @@ export const SettingsPage: React.FC = () => {
           if (data.cards.length > 0) await db.cards.bulkAdd(data.cards);
           if (data.categories.length > 0) await db.categories.bulkAdd(data.categories);
           if (data.transactions.length > 0) await db.transactions.bulkAdd(data.transactions);
-          if (data.settings) await db.settings.put(data.settings);
+          if (data.settings) {
+            await db.settings.put(data.settings);
+          } else {
+            await db.settings.put(DEFAULT_SETTINGS);
+          }
         });
 
         setBackupNotice({ type: 'success', msg: 'Data restored successfully from backup!' });
         setTimeout(() => setBackupNotice(null), 3000);
       } catch (err) {
         console.error('Restore error:', err);
-        setBackupNotice({ type: 'error', msg: 'Failed to restore backup: Invalid JSON or corrupted file.' });
+        setBackupNotice({
+          type: 'error',
+          msg: err instanceof Error ? err.message : 'Failed to restore backup.',
+        });
       } finally {
         e.target.value = '';
       }
@@ -276,6 +304,10 @@ export const SettingsPage: React.FC = () => {
     setBackupNotice({ type: 'success', msg: 'All user data has been cleared.' });
     setTimeout(() => setBackupNotice(null), 3000);
   };
+
+  const lastBackup = settings?.lastBackupDate;
+  const daysSinceBackup = lastBackup ? daysBetween(lastBackup, todayISO()) : null;
+  const isBackupStale = daysSinceBackup === null || daysSinceBackup > 14;
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -462,6 +494,26 @@ export const SettingsPage: React.FC = () => {
         <p className="text-xs text-[#787774]">
           Since all data stays exclusively inside this browser, download regular JSON backups to prevent accidental data loss or to move your database to another device.
         </p>
+
+        {isBackupStale && (
+          <div className="flex items-start gap-2.5 rounded border border-[#D9730D]/30 bg-[#FBF3DB] p-3 text-xs text-[#37352F]">
+            <AlertTriangle className="h-4 w-4 text-[#D9730D] shrink-0 mt-0.5" />
+            <div>
+              <span className="font-semibold text-[#D9730D]">Backup Reminder: </span>
+              {daysSinceBackup === null
+                ? 'You have never exported a backup yet. Export a JSON backup to protect your financial records against browser cache clears.'
+                : `Your last backup was ${daysSinceBackup} days ago (${formatDisplayDate(lastBackup!)}). Download an updated backup to keep your data safe.`}
+            </div>
+          </div>
+        )}
+
+        <div className="text-xs text-[#787774]">
+          Last backup:{' '}
+          <span className="font-medium text-[#37352F]">
+            {lastBackup ? formatDisplayDate(lastBackup) : 'Never'}
+          </span>
+          {daysSinceBackup !== null && ` (${daysSinceBackup} days ago)`}
+        </div>
 
         <div className="flex items-center gap-3 flex-wrap">
           <button

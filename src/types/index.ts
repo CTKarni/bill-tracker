@@ -39,6 +39,7 @@ export type Settings = {
   id: 'main';
   reminderDaysBeforeDue: number;   // default 3
   budgetAlertPercent: number;      // default 80
+  lastBackupDate?: string;         // YYYY-MM-DD
 };
 
 export type BillingCycle = {

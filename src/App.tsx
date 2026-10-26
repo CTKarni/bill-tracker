@@ -15,6 +15,13 @@ export const App: React.FC = () => {
   const [dbError, setDbError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Request persistent storage so the browser does not arbitrarily clear IndexedDB
+    if (typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist) {
+      navigator.storage.persist().catch(() => {
+        // Gracefully handle if denied or not supported
+      });
+    }
+
     initializeDatabase()
       .then(() => setDbReady(true))
       .catch((err) => {
