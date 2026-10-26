@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TransactionModal } from './TransactionModal';
+import { ReloadPrompt } from './ReloadPrompt';
 import {
   Menu,
   Plus,
@@ -105,7 +106,7 @@ export const Layout: React.FC = () => {
           to="/"
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 text-[10px] font-medium transition-colors ${
-              isActive ? 'text-[#37352F]' : 'text-[#787774]'
+              isActive ? 'text-[#37352F]' : 'text-[#5F5E5B]'
             }`
           }
         >
@@ -117,7 +118,7 @@ export const Layout: React.FC = () => {
           to="/cards"
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 text-[10px] font-medium transition-colors ${
-              isActive ? 'text-[#37352F]' : 'text-[#787774]'
+              isActive ? 'text-[#37352F]' : 'text-[#5F5E5B]'
             }`
           }
         >
@@ -129,7 +130,7 @@ export const Layout: React.FC = () => {
           to="/transactions"
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 text-[10px] font-medium transition-colors ${
-              isActive ? 'text-[#37352F]' : 'text-[#787774]'
+              isActive ? 'text-[#37352F]' : 'text-[#5F5E5B]'
             }`
           }
         >
@@ -141,7 +142,7 @@ export const Layout: React.FC = () => {
           to="/charts"
           className={({ isActive }) =>
             `flex flex-col items-center gap-1 text-[10px] font-medium transition-colors ${
-              isActive ? 'text-[#37352F]' : 'text-[#787774]'
+              isActive ? 'text-[#37352F]' : 'text-[#5F5E5B]'
             }`
           }
         >
@@ -151,7 +152,7 @@ export const Layout: React.FC = () => {
 
         <button
           onClick={() => setMobileMenuOpen(true)}
-          className="flex flex-col items-center gap-1 text-[10px] font-medium text-[#787774]"
+          className="flex flex-col items-center gap-1 text-[10px] font-medium text-[#5F5E5B]"
         >
           <MoreHorizontal className="h-5 w-5" />
           <span>More</span>
@@ -163,6 +164,9 @@ export const Layout: React.FC = () => {
         isOpen={quickAddOpen}
         onClose={() => setQuickAddOpen(false)}
       />
+
+      {/* PWA Update Banner */}
+      <ReloadPrompt />
     </div>
   );
 };

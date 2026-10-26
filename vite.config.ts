@@ -10,21 +10,40 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg'],
+      includeAssets: ['favicon.svg', 'pwa-192x192.svg', 'pwa-512x512.svg', 'pwa-maskable.svg'],
       manifest: {
         name: 'Credit Card Expense Tracker',
         short_name: 'CardTracker',
         description: 'Personal credit card expense and billing cycle tracker',
+        start_url: '/',
         theme_color: '#FBFBFA',
         background_color: '#FBFBFA',
         display: 'standalone',
         icons: [
           {
-            src: 'favicon.svg',
-            sizes: '192x192 512x512',
-            type: 'image/svg+xml'
+            src: '/pwa-192x192.svg',
+            sizes: '192x192',
+            type: 'image/svg+xml',
+            purpose: 'any'
+          },
+          {
+            src: '/pwa-512x512.svg',
+            sizes: '512x512',
+            type: 'image/svg+xml',
+            purpose: 'any'
+          },
+          {
+            src: '/pwa-maskable.svg',
+            sizes: '512x512',
+            type: 'image/svg+xml',
+            purpose: 'maskable'
           }
         ]
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,woff,woff2}'],
+        cleanupOutdatedCaches: true,
+        navigateFallback: '/index.html'
       }
     })
   ],
